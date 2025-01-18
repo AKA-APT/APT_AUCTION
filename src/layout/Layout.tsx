@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import aptLogo from '@/assets/apt.png';
+import { useKakaoLogin } from '@/hooks/useKakaoLogin';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const { user, login, logout } = useKakaoLogin();
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="bg-white border-b">
@@ -9,9 +12,29 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Link to="/">
             <img src={aptLogo} alt="APT 로고" className="w-auto h-8" />
           </Link>
-          <button className="px-4 py-2 text-sm text-black bg-yellow-400 rounded-lg">
-            카카오로 시작하기
-          </button>
+          {user ? (
+            <div className="flex items-center gap-4">
+              <img
+                src={user.profileImage}
+                alt={user.nickname}
+                className="w-8 h-8 rounded-full"
+              />
+              <span>{user.nickname}</span>
+              <button
+                onClick={logout}
+                className="px-4 py-2 text-sm text-black bg-gray-200 rounded-lg"
+              >
+                로그아웃
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={login}
+              className="px-4 py-2 text-sm text-black bg-[#FEE500] rounded-lg"
+            >
+              카카오로 시작하기
+            </button>
+          )}
         </div>
       </header>
       <main className="flex-1 bg-gray-50">{children}</main>
