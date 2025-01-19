@@ -15,10 +15,12 @@
     "axios": "^1.7.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.1.2"
+    "react-router-dom": "^7.1.2",
+    "vite-plugin-html": "^3.2.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
+    "@types/navermaps": "^3.7.8",
     "@types/node": "^22.10.7",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",

@@ -82,14 +82,12 @@ export const useKakaoLogin = () => {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    console.log(urlParams);
     const code = urlParams.get('code');
-    console.log(code);
 
     if (code) {
       handleAuthCode(code);
     } else {
-      checkSession();
+      // checkSession();
     }
   }, []);
 
