@@ -18,11 +18,6 @@ export default function TopNavigator({
           </Link>
           {user ? (
             <div className="flex items-center gap-4">
-              <img
-                src={user.profileImage}
-                alt={user.nickname}
-                className="w-8 h-8 rounded-full"
-              />
               <span>{user.nickname}</span>
               <button
                 onClick={logout}
