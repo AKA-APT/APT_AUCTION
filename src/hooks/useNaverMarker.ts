@@ -9,18 +9,8 @@ interface MarkerPosition {
 export const useNaverMarker = () => {
   const { data: map } = useSuspenseNaverMap();
 
-  const setMarker = (position: MarkerPosition | MarkerPosition[]) => {
+  const setMarker = (position: MarkerPosition) => {
     if (!map) return;
-
-    if (Array.isArray(position)) {
-      position.forEach(({ lat, lng }) => {
-        new naver.maps.Marker({
-          position: new naver.maps.LatLng(lat, lng),
-          map: map,
-        });
-      });
-      return;
-    }
 
     new naver.maps.Marker({
       position: new naver.maps.LatLng(position.lat, position.lng),
@@ -28,5 +18,16 @@ export const useNaverMarker = () => {
     });
   };
 
-  return { setMarker };
+  const setMarkers = (positions: MarkerPosition[]) => {
+    if (!map) return;
+
+    positions.forEach(({ lat, lng }) => {
+      new naver.maps.Marker({
+        position: new naver.maps.LatLng(lat, lng),
+        map: map,
+      });
+    });
+  };
+
+  return { setMarker, setMarkers };
 };
