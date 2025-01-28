@@ -1,7 +1,7 @@
-import { useNaverMarker } from '@/hooks/useNaverMarker';
+import { useSetNaverMarker } from '@/hooks/useSetNaverMarker';
 
 export default function Home() {
-  const { setMarker } = useNaverMarker();
+  const { setMarker } = useSetNaverMarker();
 
   const m1 = {
     lat: 37.3595704,

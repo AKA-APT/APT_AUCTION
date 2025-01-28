@@ -1,5 +1,5 @@
 import { useSuspenseNaverMap } from '@/hooks/useSuspenseNaverMap';
-import { useNaverMarker } from '@/hooks/useNaverMarker';
+import { useSetNaverMarker } from '@/hooks/useSetNaverMarker';
 import { Suspense } from 'react';
 
 const initialPosition = {

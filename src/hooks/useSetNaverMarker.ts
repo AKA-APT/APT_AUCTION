@@ -6,7 +6,7 @@ interface MarkerPosition {
   lng: number;
 }
 
-export const useNaverMarker = () => {
+export const useSetNaverMarker = () => {
   const { data: map } = useSuspenseNaverMap();
 
   const setMarker = (position: MarkerPosition) => {
