@@ -7,5 +7,6 @@ export default function Home() {
   const m1 = SEOUL_CITY_HALL;
 
   setMarker(m1);
+
   return <>ㄴ</>;
 }

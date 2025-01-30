@@ -5,9 +5,13 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 const INITIAL_POSITION = SEOUL_CITY_HALL;
 
 export function useInitializeNaverMap() {
-  const { setMap } = useMapStore();
+  const { map, setMap } = useMapStore();
 
   const initializeNaverMap = () => {
+    if (map !== null) {
+      return map;
+    }
+
     const mapOption = {
       center: new naver.maps.LatLng(INITIAL_POSITION),
       zoomControl: false,

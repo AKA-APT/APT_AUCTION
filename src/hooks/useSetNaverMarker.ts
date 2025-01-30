@@ -1,4 +1,3 @@
-import { useMapStore } from '@/stores/useMapStore';
 import { useInitializeNaverMap } from './useInitializeNaverMap';
 
 interface MarkerPosition {

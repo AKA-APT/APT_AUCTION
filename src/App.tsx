@@ -1,20 +1,22 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Layout from '@/layout/Layout';
+import { Routes, Route } from 'react-router-dom';
 import Home from '@/pages/Home';
-import { QueryClient } from '@tanstack/react-query';
-import { Suspense } from 'react';
-import KakaoCallback from './components/KakaoCallback';
+import KakaoCallback from '@/components/KakaoCallback';
+import MapLayout from '@/layout/MapLayout';
+import NotNeedMap from '@/pages/NotNeedMap';
+import Layout from './layout/Layout';
 
 export default function App() {
-  const queryClient = new QueryClient();
   return (
-    <Router>
-      <Layout>
-        <Routes>
-          <Route path="/auth/login/kakao" element={<KakaoCallback />} />
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </Layout>
-    </Router>
+    <Routes>
+      <Route path="/auth/login/kakao" element={<KakaoCallback />} />
+
+      <Route element={<Layout />}>
+        <Route path="/a" element={<NotNeedMap />} />
+
+        <Route path="/" element={<MapLayout />}>
+          <Route index element={<Home />} />
+        </Route>
+      </Route>
+    </Routes>
   );
 }
