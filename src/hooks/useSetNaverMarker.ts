@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useSuspenseNaverMap } from './useSuspenseNaverMap';
+import { useMapStore } from '@/stores/useMapStore';
+import { useInitializeNaverMap } from './useInitializeNaverMap';
 
 interface MarkerPosition {
   lat: number;
@@ -7,11 +7,9 @@ interface MarkerPosition {
 }
 
 export const useSetNaverMarker = () => {
-  const { data: map } = useSuspenseNaverMap();
+  const { data: map } = useInitializeNaverMap();
 
   const setMarker = (position: MarkerPosition) => {
-    if (!map) return;
-
     new naver.maps.Marker({
       position: new naver.maps.LatLng(position.lat, position.lng),
       map: map,
@@ -19,8 +17,6 @@ export const useSetNaverMarker = () => {
   };
 
   const setMarkers = (positions: MarkerPosition[]) => {
-    if (!map) return;
-
     positions.forEach(({ lat, lng }) => {
       new naver.maps.Marker({
         position: new naver.maps.LatLng(lat, lng),

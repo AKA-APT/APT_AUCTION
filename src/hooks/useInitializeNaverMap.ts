@@ -1,24 +1,15 @@
+import { SEOUL_CITY_HALL } from '@/static/positions';
 import { useMapStore } from '@/stores/useMapStore';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-interface UseSuspenseNaverMapProps {
-  latitude: number;
-  longitude: number;
-}
+const INITIAL_POSITION = SEOUL_CITY_HALL;
 
-export function useSuspenseNaverMap(
-  { latitude, longitude }: UseSuspenseNaverMapProps = {
-    latitude: 37.3595704,
-    longitude: 127.105399,
-  },
-) {
-  const { map, setMap } = useMapStore();
+export function useInitializeNaverMap() {
+  const { setMap } = useMapStore();
 
-  const getMap = () => {
-    if (map) return map;
-
+  const initializeNaverMap = () => {
     const mapOption = {
-      center: new naver.maps.LatLng(latitude, longitude),
+      center: new naver.maps.LatLng(INITIAL_POSITION),
       zoomControl: false,
       zoom: 17,
       scaleControl: false,
@@ -31,8 +22,8 @@ export function useSuspenseNaverMap(
   };
 
   const { data } = useSuspenseQuery({
-    queryKey: ['naverMap', latitude, longitude],
-    queryFn: () => getMap(),
+    queryKey: ['naver-map', INITIAL_POSITION.lat, INITIAL_POSITION.lng],
+    queryFn: () => initializeNaverMap(),
     staleTime: Infinity,
     refetchOnMount: false,
     refetchOnWindowFocus: false,

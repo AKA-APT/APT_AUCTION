@@ -1,14 +1,8 @@
-import { useSuspenseNaverMap } from '@/hooks/useSuspenseNaverMap';
-import { useSetNaverMarker } from '@/hooks/useSetNaverMarker';
+import { useInitializeNaverMap } from '@/hooks/useInitializeNaverMap';
 import { Suspense } from 'react';
 
-const initialPosition = {
-  latitude: 37.3595704,
-  longitude: 127.105399,
-};
-
 function MapRenderer() {
-  useSuspenseNaverMap(initialPosition);
+  useInitializeNaverMap();
 
   return null;
 }
