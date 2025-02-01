@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import aptLogo from '@/assets/apt.png';
-import { useKakaoLogin } from '@/hooks/useKakaoLogin';
+import { useKakaoLogin } from '@/hooks/Auth/useKakaoLogin';
 
 export default function TopNavigator({
   children,

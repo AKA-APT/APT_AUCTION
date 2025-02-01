@@ -1,14 +1,7 @@
-import { useMapStore } from '@/stores/useMapStore';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 export function useInitializeNaverMap() {
-  const { map, setMap } = useMapStore();
-
   const initializeNaverMap = () => {
-    if (map !== null) {
-      return map;
-    }
-
     const mapOption = {
       zoomControl: false,
       zoom: 17,
@@ -17,8 +10,6 @@ export function useInitializeNaverMap() {
     };
 
     const newMap = new naver.maps.Map('map', mapOption);
-    setMap(newMap);
-    console.log(newMap);
     return newMap;
   };
 

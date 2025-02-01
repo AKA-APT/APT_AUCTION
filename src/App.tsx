@@ -1,9 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from '@/pages/Home';
 import KakaoCallback from '@/components/KakaoCallback';
-import MapLayout from '@/layout/MapLayout';
 import NotNeedMap from '@/pages/NotNeedMap';
 import Layout from './layout/Layout';
+import MyPage from './pages/MyPage';
 
 export default function App() {
   return (
@@ -13,9 +13,8 @@ export default function App() {
       <Route element={<Layout />}>
         <Route path="/a" element={<NotNeedMap />} />
 
-        <Route path="/" element={<MapLayout />}>
-          <Route index element={<Home />} />
-        </Route>
+        <Route path="/" element={<Home />} />
+        <Route path="/my-page" element={<MyPage />} />
       </Route>
     </Routes>
   );
