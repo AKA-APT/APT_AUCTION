@@ -1,13 +1,13 @@
 import { Suspense } from 'react';
-import MapLayout from './MapLayout';
 import TopNavigator from './TopNavigator';
+import { Outlet } from 'react-router-dom';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout() {
   return (
     <TopNavigator>
-      <MapLayout>
-        <Suspense>{children}</Suspense>
-      </MapLayout>
+      <Suspense>
+        <Outlet />
+      </Suspense>
     </TopNavigator>
   );
 }
