@@ -17,13 +17,12 @@ function SeoulMarker() {
   return null;
 }
 
-
 export default function Home() {
   return (
     <>
       <div id={'map'} style={{ height: 'calc(100vh - 66px)' }} />
       <Suspense>
-        <MapRenderer />    
+        <MapRenderer />
         <SeoulMarker />
       </Suspense>
     </>

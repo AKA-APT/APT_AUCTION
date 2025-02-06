@@ -71,12 +71,9 @@ export const useKakaoLogin = () => {
       const response = await fetch(`/api/oauth/kakao/callback?code=${code}`, {
         credentials: 'include',
       });
-      console.log(response);
 
       if (response.ok) {
-        console.log(response);
         const data: LoginResponse = await response.json();
-        console.log('Login response:', data);
 
         if (data.message === 'Login successful' && data.user) {
           setUser(data.user);
