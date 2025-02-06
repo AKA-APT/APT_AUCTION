@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from '@/pages/Home';
-import KakaoCallback from '@/components/KakaoCallback';
+import KakaoCallback from '@/components/Auth/KakaoCallback';
 import Layout from './layout/Layout';
 import MyPage from './pages/MyPage';
 

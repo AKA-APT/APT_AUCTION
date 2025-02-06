@@ -18,7 +18,7 @@ export default function TopNavigator({
           </Link>
           {user ? (
             <div className="flex items-center gap-4">
-              <span>{user.nickname}</span>
+              <Link to="/my-page">{user.nickname}</Link>
               <button
                 onClick={logout}
                 className="px-4 py-2 text-sm text-black bg-gray-200 rounded-lg"

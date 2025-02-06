@@ -1,7 +1,8 @@
+import { SideNav } from '@/components/Map/SideNav';
 import { useInitializeNaverMap } from '@/hooks/Map/useInitializeNaverMap';
 import { useSetNaverMarker } from '@/hooks/Map/useSetNaverMarker';
 import { SEOUL_CITY_HALL } from '@/static/positions';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 
 function MapRenderer() {
   useInitializeNaverMap();
@@ -12,7 +13,9 @@ function MapRenderer() {
 function SeoulMarker() {
   const { setMarker } = useSetNaverMarker();
 
-  setMarker(SEOUL_CITY_HALL);
+  useEffect(() => {
+    setMarker(SEOUL_CITY_HALL);
+  }, [setMarker]);
 
   return null;
 }
@@ -20,6 +23,7 @@ function SeoulMarker() {
 export default function Home() {
   return (
     <>
+      <SideNav />
       <div id={'map'} style={{ height: 'calc(100vh - 66px)' }} />
       <Suspense>
         <MapRenderer />
