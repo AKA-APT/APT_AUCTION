@@ -20,6 +20,8 @@ export const useSetNaverMarker = () => {
     });
 
     naver.maps.Event.addListener(marker, 'click', () => {
+      map.panTo(new naver.maps.LatLng(position.lat, position.lng));
+
       selectMarker({
         id: position.id,
         title: position.title,

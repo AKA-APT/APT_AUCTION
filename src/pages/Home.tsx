@@ -2,7 +2,7 @@ import { SideNav } from '@/components/Map/SideNav';
 import { useInitializeNaverMap } from '@/hooks/Map/useInitializeNaverMap';
 import { useSetNaverMarker } from '@/hooks/Map/useSetNaverMarker';
 import { useAuctions } from '@/hooks/queries/useAuctions';
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 function MapRenderer() {
   useInitializeNaverMap();
@@ -12,26 +12,33 @@ function MapRenderer() {
 
 function SeoulMarker() {
   const { data: map } = useInitializeNaverMap();
-  const latLngBounds = map.getBounds();
-  const { data: auctions } = useAuctions({
-    lbLat: latLngBounds.minY(),
-    lbLng: latLngBounds.minX(),
-    rtLat: latLngBounds.maxY(),
-    rtLng: latLngBounds.maxX(),
+  const [{ lbLat, lbLng, rtLat, rtLng }, setLatLngBounds] = useState(() => {
+    const latLngBounds = map.getBounds();
+    return {
+      lbLat: latLngBounds.minY(),
+      lbLng: latLngBounds.minX(),
+      rtLat: latLngBounds.maxY(),
+      rtLng: latLngBounds.maxX(),
+    };
   });
-
-  console.log(
-    latLngBounds.minY(),
-    latLngBounds.minX(),
-    latLngBounds.maxY(),
-    latLngBounds.maxX(),
-  );
+  const { data: auctions } = useAuctions({ lbLat, lbLng, rtLat, rtLng });
 
   const { setMarkers } = useSetNaverMarker();
 
   useEffect(() => {
     setMarkers(auctions);
   }, [setMarkers]);
+
+  useEffect(() => {
+    map.addListener('dragend', () => {
+      setLatLngBounds({
+        lbLat: map.getBounds().minY(),
+        lbLng: map.getBounds().minX(),
+        rtLat: map.getBounds().maxY(),
+        rtLng: map.getBounds().maxX(),
+      });
+    });
+  }, [map]);
 
   return null;
 }

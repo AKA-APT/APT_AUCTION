@@ -19,5 +19,10 @@
   ],
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "search.exclude": {
+    "**/.yarn": true,
+    "yarn.lock": true,
+    "**/.pnp.*": true
+  },
 }
