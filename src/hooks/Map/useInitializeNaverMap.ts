@@ -21,6 +21,7 @@ export function useInitializeNaverMap() {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     gcTime: Infinity,
+    retry: 2,
   });
 
   return { data };

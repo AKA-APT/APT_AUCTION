@@ -1,27 +1,29 @@
 import { Link } from 'react-router-dom';
 import aptLogo from '@/assets/apt.png';
 import { useKakaoLogin } from '@/hooks/Auth/useKakaoLogin';
+import { useUser } from '@/hooks/Auth/useUser';
 
 export default function TopNavigator({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { user, login, logout } = useKakaoLogin();
+  const { data: user } = useUser();
+  const { login, logout } = useKakaoLogin();
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="bg-white border-b">
-        <div className="flex items-center justify-between h-16 px-4">
+    <div className="flex min-h-screen flex-col">
+      <header className="border-b bg-white">
+        <div className="flex h-16 items-center justify-between px-4">
           <Link to="/">
-            <img src={aptLogo} alt="APT 로고" className="w-auto h-8" />
+            <img src={aptLogo} alt="APT 로고" className="h-8 w-auto" />
           </Link>
           {user ? (
             <div className="flex items-center gap-4">
               <Link to="/my-page">{user.nickname}</Link>
               <button
                 onClick={logout}
-                className="px-4 py-2 text-sm text-black bg-gray-200 rounded-lg"
+                className="rounded-lg bg-gray-200 px-4 py-2 text-sm text-black"
               >
                 로그아웃
               </button>
@@ -29,7 +31,7 @@ export default function TopNavigator({
           ) : (
             <button
               onClick={login}
-              className="px-4 py-2 text-sm text-black bg-[#FEE500] rounded-lg"
+              className="rounded-lg bg-[#FEE500] px-4 py-2 text-sm text-black"
             >
               카카오로 시작하기
             </button>
