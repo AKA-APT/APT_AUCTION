@@ -13,9 +13,13 @@ export function MyTenders() {
             className="overflow-hidden rounded-lg border shadow-lg"
           >
             <div className="p-4">
-              <h3 className="text-lg font-semibold">{tender.auction.name}</h3>
+              <h3 className="text-lg font-semibold">
+                {tender.auction.objectList[0].objectAddress}
+              </h3>
               <p className="text-gray-600">{tender.tenderCost}</p>
-              <p className="text-gray-600">{tender.auction.lowestCost}</p>
+              <p className="text-gray-600">
+                {tender.auction.lowestSellingPrice}
+              </p>
             </div>
           </div>
         ))}

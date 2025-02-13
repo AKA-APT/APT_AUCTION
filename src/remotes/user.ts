@@ -1,4 +1,3 @@
-import { MyTenders } from '@/models/tender';
 import { User } from '@/models/user';
 import { httpClient } from '@/utils/http-client';
 

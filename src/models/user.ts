@@ -1,9 +1,3 @@
-interface SessionUser {
-  id: number;
-  nickname: string;
-  role: 'USER' | 'ADMIN';
-}
-
 export interface User {
   createdAt: string;
   updatedAt: string;
@@ -13,9 +7,4 @@ export interface User {
   providerId: string;
   provider: 'KAKAO';
   role: 'USER';
-}
-
-export interface LoginResponse {
-  message: string;
-  user: SessionUser;
 }
