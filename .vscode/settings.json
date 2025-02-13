@@ -1,4 +1,9 @@
 {
+  "search.exclude": {
+    "**/.yarn": true,
+    "yarn.lock": true,
+    "**/.pnp.*": true
+  },
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
@@ -12,17 +17,13 @@
     "typescriptreact": "javascript"
   },
   "editor.inlineSuggest.enabled": true,
-  "eslint.validate": [
-    "javascript",
-    "typescript",
-    "typescriptreact"
-  ],
+  "eslint.validate": ["javascript", "typescript", "typescriptreact"],
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "search.exclude": {
-    "**/.yarn": true,
-    "yarn.lock": true,
-    "**/.pnp.*": true
-  },
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "path-intellisense.mapping": {
+    "@": "${workspaceRoot}/src"
+  }
 }
