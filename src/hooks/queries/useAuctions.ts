@@ -7,9 +7,9 @@ export const useAuctions = (params: AuctionParams) => {
     queryKey: [
       'getAuctions',
       params.lbLat,
-      params.lbLon,
+      params.lbLng,
       params.rtLat,
-      params.rtLon,
+      params.rtLng,
     ],
     queryFn: () => getAuctions(params),
   });

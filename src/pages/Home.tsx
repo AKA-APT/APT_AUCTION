@@ -15,10 +15,17 @@ function SeoulMarker() {
   const latLngBounds = map.getBounds();
   const { data: auctions } = useAuctions({
     lbLat: latLngBounds.minY(),
-    lbLon: latLngBounds.minX(),
+    lbLng: latLngBounds.minX(),
     rtLat: latLngBounds.maxY(),
-    rtLon: latLngBounds.maxX(),
+    rtLng: latLngBounds.maxX(),
   });
+
+  console.log(
+    latLngBounds.minY(),
+    latLngBounds.minX(),
+    latLngBounds.maxY(),
+    latLngBounds.maxX(),
+  );
 
   const { setMarkers } = useSetNaverMarker();
 

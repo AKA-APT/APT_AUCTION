@@ -18,10 +18,10 @@ export function useInitializeNaverMap() {
       mapDataControl: false,
     };
 
-    const { latitude, longitude } = await getMyLocation();
+    // const { latitude, longitude } = await getMyLocation();
     const newMap = new naver.maps.Map('map', {
       ...mapOption,
-      center: new naver.maps.LatLng(latitude, longitude),
+      center: new naver.maps.LatLng(37.5860921241776, 126.701476130149),
     });
 
     return newMap;

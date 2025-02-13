@@ -1,8 +1,8 @@
 export interface AuctionParams {
   lbLat: number;
-  lbLon: number;
+  lbLng: number;
   rtLat: number;
-  rtLon: number;
+  rtLng: number;
 }
 
 interface Location {
