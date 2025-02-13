@@ -1,7 +1,7 @@
 import { SideNav } from '@/components/Map/SideNav';
 import { useInitializeNaverMap } from '@/hooks/Map/useInitializeNaverMap';
 import { useSetNaverMarker } from '@/hooks/Map/useSetNaverMarker';
-import { SEOUL_CITY_HALL } from '@/static/positions';
+import { useAuctions } from '@/hooks/queries/useAuctions';
 import { Suspense, useEffect } from 'react';
 
 function MapRenderer() {
@@ -11,11 +11,20 @@ function MapRenderer() {
 }
 
 function SeoulMarker() {
-  const { setMarker } = useSetNaverMarker();
+  const { data: map } = useInitializeNaverMap();
+  const latLngBounds = map.getBounds();
+  const { data: auctions } = useAuctions({
+    lbLat: latLngBounds.minY(),
+    lbLon: latLngBounds.minX(),
+    rtLat: latLngBounds.maxY(),
+    rtLon: latLngBounds.maxX(),
+  });
+
+  const { setMarkers } = useSetNaverMarker();
 
   useEffect(() => {
-    setMarker(SEOUL_CITY_HALL);
-  }, [setMarker]);
+    setMarkers(auctions);
+  }, [setMarkers]);
 
   return null;
 }

@@ -1,5 +1,6 @@
 import { useMarkerStore } from '@/stores/useMarkerStore';
 import { useInitializeNaverMap } from './useInitializeNaverMap';
+import { Auction } from '@/models/auction';
 
 interface MarkerPosition {
   id: string;
@@ -28,8 +29,16 @@ export const useSetNaverMarker = () => {
     });
   };
 
-  const setMarkers = (positions: MarkerPosition[]) => {
-    positions.map((position) => setMarker(position));
+  const setMarkers = (auctions: Auction[]) => {
+    auctions.forEach((auction) => {
+      if (auction.bjdInfo.location == null) return;
+      setMarker({
+        id: auction.id,
+        title: auction.objectList[0].objectAddress,
+        lat: auction.bjdInfo.location.y,
+        lng: auction.bjdInfo.location.x,
+      });
+    });
   };
 
   return { setMarker, setMarkers };
