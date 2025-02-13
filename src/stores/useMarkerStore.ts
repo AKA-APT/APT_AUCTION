@@ -1,23 +1,16 @@
+import { Auction } from '@/models/auction';
 import { create } from 'zustand';
 
-interface MarkerInfo {
-  id: string;
-  lat: number;
-  lng: number;
-  title: string;
-  // 추가 정보들
-}
-
 interface MarkerStore {
-  selectedMarker: MarkerInfo | null;
+  selectedAuction: Auction | null;
   isNavOpen: boolean;
-  selectMarker: (marker: MarkerInfo) => void;
+  selectMarker: (marker: Auction) => void;
   closeNav: () => void;
 }
 
 export const useMarkerStore = create<MarkerStore>((set) => ({
-  selectedMarker: null,
+  selectedAuction: null,
   isNavOpen: false,
-  selectMarker: (marker) => set({ selectedMarker: marker, isNavOpen: true }),
-  closeNav: () => set({ isNavOpen: false, selectedMarker: null }),
+  selectMarker: (marker) => set({ selectedAuction: marker, isNavOpen: true }),
+  closeNav: () => set({ isNavOpen: false, selectedAuction: null }),
 }));

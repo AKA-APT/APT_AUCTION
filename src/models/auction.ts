@@ -58,6 +58,7 @@ export interface Auction {
   keyword: string | null;
   biddingDate: string;
   pnu: string;
+  location: Location;
   bjdCode: string;
   bjdInfo: BjdInfo;
   registrationDate: string;

@@ -1,7 +1,11 @@
 import { useMarkerStore } from '@/stores/useMarkerStore';
 
 export function SideNav() {
-  const { selectedMarker, isNavOpen, closeNav } = useMarkerStore();
+  const {
+    selectedAuction: selectedMarker,
+    isNavOpen,
+    closeNav,
+  } = useMarkerStore();
 
   if (!isNavOpen) return null;
 
@@ -16,11 +20,13 @@ export function SideNav() {
       </button>
       {selectedMarker && (
         <div className="p-4">
-          <h2 className="text-xl font-bold">{selectedMarker.title}</h2>
+          <h2 className="text-xl font-bold">
+            {selectedMarker.objectList[0].objectAddress}
+          </h2>
           <div className="mt-4">
-            <p>위도: {selectedMarker.lat}</p>
-            <p>경도: {selectedMarker.lng}</p>
-            {/* 추가 정보 표시 */}
+            <p>위도: {selectedMarker.location.y}</p>
+            <p>경도: {selectedMarker.location.x}</p>
+            최저입찰가: {selectedMarker.lowestSellingPrice}원
           </div>
         </div>
       )}
