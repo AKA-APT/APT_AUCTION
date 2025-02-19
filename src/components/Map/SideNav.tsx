@@ -1,11 +1,7 @@
 import { useAuctionStore } from '@/stores/useAuctionStore';
 
 export function SideNav() {
-  const {
-    selectedAuction: selectedMarker,
-    isNavOpen,
-    closeNav,
-  } = useAuctionStore();
+  const { selectedAuction, isNavOpen, closeNav } = useAuctionStore();
 
   if (!isNavOpen) return null;
 
@@ -18,15 +14,15 @@ export function SideNav() {
       >
         ✕
       </button>
-      {selectedMarker && (
+      {selectedAuction && (
         <div className="p-4">
           <h2 className="text-xl font-bold">
-            {selectedMarker.objectList[0].objectAddress}
+            {selectedAuction.objectList[0].objectAddress}
           </h2>
           <div className="mt-4">
-            <p>위도: {selectedMarker.location.y}</p>
-            <p>경도: {selectedMarker.location.x}</p>
-            최저입찰가: {selectedMarker.lowestSellingPrice}원
+            <p>위도: {selectedAuction.bjdInfo.location.y}</p>
+            <p>경도: {selectedAuction.bjdInfo.location.x}</p>
+            최저입찰가: {selectedAuction.lowestSellingPrice}원
           </div>
         </div>
       )}
