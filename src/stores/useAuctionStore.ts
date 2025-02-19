@@ -1,16 +1,17 @@
 import { Auction } from '@/models/auction';
 import { create } from 'zustand';
 
-interface MarkerStore {
+interface AuctionStore {
   selectedAuction: Auction | null;
   isNavOpen: boolean;
-  selectMarker: (marker: Auction) => void;
+  setSelectAuction: (auction: Auction) => void;
   closeNav: () => void;
 }
 
-export const useMarkerStore = create<MarkerStore>((set) => ({
+export const useAuctionStore = create<AuctionStore>((set) => ({
   selectedAuction: null,
   isNavOpen: false,
-  selectMarker: (marker) => set({ selectedAuction: marker, isNavOpen: true }),
+  setSelectAuction: (auction) =>
+    set({ selectedAuction: auction, isNavOpen: true }),
   closeNav: () => set({ isNavOpen: false, selectedAuction: null }),
 }));
