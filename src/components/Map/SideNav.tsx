@@ -1,11 +1,11 @@
-import { useMarkerStore } from '@/stores/useMarkerStore';
+import { useAuctionStore } from '@/stores/useAuctionStore';
 
 export function SideNav() {
   const {
     selectedAuction: selectedMarker,
     isNavOpen,
     closeNav,
-  } = useMarkerStore();
+  } = useAuctionStore();
 
   if (!isNavOpen) return null;
 
@@ -13,7 +13,7 @@ export function SideNav() {
     <div className="fixed left-0 top-[65px] z-10 h-[calc(100vh-65px)] w-[max(30%,24rem)] bg-white shadow-lg">
       <button
         onClick={closeNav}
-        className="absolute right-4 top-4 flex size-4 h-10 w-10 items-center justify-center rounded-none bg-red-500 text-white"
+        className="absolute flex items-center justify-center w-10 h-10 text-white bg-red-500 rounded-none right-4 top-4 size-4"
         style={{ boxSizing: 'border-box' }}
       >
         ✕

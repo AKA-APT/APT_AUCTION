@@ -7,24 +7,21 @@ export const useSetNaverMarker = () => {
   const { setSelectAuction } = useAuctionStore();
 
   const setMarker = (auction: Auction) => {
-    const marker = new naver.maps.Marker({
-      position: new naver.maps.LatLng(auction.location.y, auction.location.x),
-      map: map,
-    });
+    const { x, y } = auction.bjdInfo.location;
+    const position = new naver.maps.LatLng(y, x);
+
+    const marker = new naver.maps.Marker({ position, map });
 
     naver.maps.Event.addListener(marker, 'click', () => {
-      map.panTo(new naver.maps.LatLng(auction.location.y, auction.location.x));
-
-      selectMarker(auction);
+      map.panTo(position);
+      setSelectAuction(auction);
     });
 
     return marker;
   };
 
   const setMarkers = (auctions: Auction[]) => {
-    return auctions
-      .filter((auction) => auction.location != null)
-      .map((auction) => setMarker(auction));
+    return auctions.map((auction) => setMarker(auction));
   };
 
   return { setMarker, setMarkers };
