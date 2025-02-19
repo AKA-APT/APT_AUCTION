@@ -40,7 +40,7 @@ function SeoulMarker() {
   const { setMarkers } = useSetNaverMarker();
 
   useEffect(() => {
-    const markers = setMarkers(auctions).flat();
+    const markers = setMarkers(auctions);
 
     const markerClustering = new MarkerClustering({
       minClusterSize: 2,
@@ -58,14 +58,17 @@ function SeoulMarker() {
   }, [auctions, setMarkers]);
 
   useEffect(() => {
-    map.addListener('dragend', () => {
+    const adjustBounds = () => {
       setLatLngBounds({
         lbLat: map.getBounds().minY(),
         lbLng: map.getBounds().minX(),
         rtLat: map.getBounds().maxY(),
         rtLng: map.getBounds().maxX(),
       });
-    });
+    };
+
+    map.addListener('dragend', adjustBounds);
+    map.addListener('zoom_changed', adjustBounds);
   }, [map]);
 
   return null;
