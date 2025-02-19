@@ -15,7 +15,7 @@ interface BjdInfo {
   sgg: string;
   emd: string;
   bjdCode: string;
-  location?: Location;
+  location: Location;
 }
 
 interface History {

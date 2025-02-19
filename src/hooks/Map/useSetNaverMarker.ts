@@ -1,10 +1,10 @@
-import { useMarkerStore } from '@/stores/useMarkerStore';
+import { useAuctionStore } from '@/stores/useAuctionStore';
 import { useInitializeNaverMap } from './useInitializeNaverMap';
 import { Auction } from '@/models/auction';
 
 export const useSetNaverMarker = () => {
   const { data: map } = useInitializeNaverMap();
-  const { selectMarker } = useMarkerStore();
+  const { setSelectAuction } = useAuctionStore();
 
   const setMarker = (auction: Auction) => {
     const marker = new naver.maps.Marker({

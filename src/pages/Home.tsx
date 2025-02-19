@@ -24,7 +24,7 @@ function MapRenderer() {
   return null;
 }
 
-function SeoulMarker() {
+function MerkerRenderer() {
   const { data: map } = useInitializeNaverMap();
   const [{ lbLat, lbLng, rtLat, rtLng }, setLatLngBounds] = useState(() => {
     const latLngBounds = map.getBounds();
@@ -50,7 +50,11 @@ function SeoulMarker() {
       disableClickZoom: false,
       gridSize: 120,
       icons: clusterUrls.map((url) => {
-        const imageIcon: naver.maps.ImageIcon = { url };
+        const imageIcon: naver.maps.ImageIcon = {
+          url,
+          size: new naver.maps.Size(40, 40),
+          scaledSize: new naver.maps.Size(40, 40),
+        };
         return imageIcon;
       }),
       indexGenerator: [10, 100, 200, 500, 1000],
@@ -81,7 +85,7 @@ export default function Home() {
       <div id={'map'} style={{ height: 'calc(100vh - 66px)' }} />
       <Suspense>
         <MapRenderer />
-        <SeoulMarker />
+        <MerkerRenderer />
       </Suspense>
     </>
   );
