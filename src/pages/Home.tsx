@@ -42,7 +42,7 @@ function MerkerRenderer() {
   useEffect(() => {
     const markers = setMarkers(auctions);
 
-    const markerClustering = new MarkerClustering({
+    new MarkerClustering({
       minClusterSize: 2,
       maxZoom: 13,
       map: map,
@@ -58,6 +58,15 @@ function MerkerRenderer() {
         return imageIcon;
       }),
       indexGenerator: [10, 100, 200, 500, 1000],
+      stylingFunction: function (clusterMarker, count) {
+        const container = clusterMarker.getElement();
+        container.style.position = 'relative';
+        container.innerHTML = `
+          <div class="absolute inset-0 z-10 flex items-center justify-center text-white font-bold text-[12px]">
+            ${count}
+          </div>
+        `;
+      },
     });
   }, [auctions, setMarkers]);
 
