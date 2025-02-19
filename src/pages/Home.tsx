@@ -3,6 +3,20 @@ import { useInitializeNaverMap } from '@/hooks/Map/useInitializeNaverMap';
 import { useSetNaverMarker } from '@/hooks/Map/useSetNaverMarker';
 import { useAuctions } from '@/hooks/queries/useAuctions';
 import { Suspense, useEffect, useState } from 'react';
+import clusterUrl1 from '@/assets/cluster/cluster-marker-1.png';
+import clusterUrl2 from '@/assets/cluster/cluster-marker-2.png';
+import clusterUrl3 from '@/assets/cluster/cluster-marker-3.png';
+import clusterUrl4 from '@/assets/cluster/cluster-marker-4.png';
+import clusterUrl5 from '@/assets/cluster/cluster-marker-5.png';
+import MarkerClustering from '@/utils/MarkerClustering';
+
+const clusterUrls = [
+  clusterUrl1,
+  clusterUrl2,
+  clusterUrl3,
+  clusterUrl4,
+  clusterUrl5,
+];
 
 function MapRenderer() {
   useInitializeNaverMap();
@@ -26,8 +40,22 @@ function SeoulMarker() {
   const { setMarkers } = useSetNaverMarker();
 
   useEffect(() => {
-    setMarkers(auctions);
-  }, [setMarkers]);
+    const markers = setMarkers(auctions).flat();
+
+    const markerClustering = new MarkerClustering({
+      minClusterSize: 2,
+      maxZoom: 13,
+      map: map,
+      markers: markers,
+      disableClickZoom: false,
+      gridSize: 120,
+      icons: clusterUrls.map((url) => {
+        const imageIcon: naver.maps.ImageIcon = { url };
+        return imageIcon;
+      }),
+      indexGenerator: [10, 100, 200, 500, 1000],
+    });
+  }, [auctions, setMarkers]);
 
   useEffect(() => {
     map.addListener('dragend', () => {

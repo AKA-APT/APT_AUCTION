@@ -17,13 +17,14 @@ export const useSetNaverMarker = () => {
 
       selectMarker(auction);
     });
+
+    return marker;
   };
 
   const setMarkers = (auctions: Auction[]) => {
-    auctions.forEach((auction) => {
-      if (auction.location == null) return;
-      setMarker(auction);
-    });
+    return auctions
+      .filter((auction) => auction.location != null)
+      .map((auction) => setMarker(auction));
   };
 
   return { setMarker, setMarkers };

@@ -758,3 +758,5 @@ Cluster.prototype = {
     return new naver.maps.Point(averageCenter[0], averageCenter[1]);
   },
 };
+
+export default MarkerClustering;
