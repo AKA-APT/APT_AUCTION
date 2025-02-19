@@ -1,9 +1,9 @@
 import { useAuctionStore } from '@/stores/useAuctionStore';
-import { useInitializeNaverMap } from './useInitializeNaverMap';
+import { useInitializeMap } from './useInitializeMap';
 import { Auction } from '@/models/auction';
 
-export const useSetNaverMarker = () => {
-  const { data: map } = useInitializeNaverMap();
+export const useSetMarker = () => {
+  const { data: map } = useInitializeMap();
   const { setSelectAuction } = useAuctionStore();
 
   const setMarker = (auction: Auction) => {

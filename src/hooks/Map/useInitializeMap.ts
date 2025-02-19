@@ -9,7 +9,7 @@ async function getMyLocation() {
   });
 }
 
-export function useInitializeNaverMap() {
+export function useInitializeMap() {
   const initializeNaverMap = async () => {
     const mapOption = {
       zoomControl: false,

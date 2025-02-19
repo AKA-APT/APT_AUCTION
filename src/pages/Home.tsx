@@ -1,6 +1,6 @@
 import { SideNav } from '@/components/Map/SideNav';
-import { useInitializeNaverMap } from '@/hooks/Map/useInitializeNaverMap';
-import { useSetNaverMarker } from '@/hooks/Map/useSetNaverMarker';
+import { useInitializeMap } from '@/hooks/Map/useInitializeMap';
+import { useSetMarker } from '@/hooks/Map/useSetMarker';
 import { useAuctions } from '@/hooks/queries/useAuctions';
 import { Suspense, useEffect, useState } from 'react';
 import clusterUrl1 from '@/assets/cluster/cluster-marker-1.png';
@@ -19,13 +19,13 @@ const clusterUrls = [
 ];
 
 function MapRenderer() {
-  useInitializeNaverMap();
+  useInitializeMap();
 
   return null;
 }
 
 function MerkerRenderer() {
-  const { data: map } = useInitializeNaverMap();
+  const { data: map } = useInitializeMap();
   const [{ lbLat, lbLng, rtLat, rtLng }, setLatLngBounds] = useState(() => {
     const latLngBounds = map.getBounds();
     return {
@@ -37,7 +37,7 @@ function MerkerRenderer() {
   });
   const { data: auctions } = useAuctions({ lbLat, lbLng, rtLat, rtLng });
 
-  const { setMarkers } = useSetNaverMarker();
+  const { setMarkers } = useSetMarker();
 
   useEffect(() => {
     const markers = setMarkers(auctions);
