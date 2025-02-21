@@ -3,7 +3,6 @@ import { useInitializeMap } from '@/hooks/Map/useInitializeMap';
 import { useSetMarker } from '@/hooks/Map/useSetMarker';
 import { useAuctions } from '@/hooks/queries/useAuctions';
 import { Suspense, useEffect, useState } from 'react';
-import MarkerClustering from '@/utils/MarkerClustering';
 import { useSetCluster } from '@/hooks/Map/useSetCluster';
 
 function MapRenderer() {

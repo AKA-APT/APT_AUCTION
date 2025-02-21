@@ -1,13 +1,14 @@
 import { useAuctionStore } from '@/stores/useAuctionStore';
 import { useInitializeMap } from './useInitializeMap';
-import { Auction } from '@/models/auction';
+import { Auction, GeoAuctionGroup } from '@/models/auction';
 
 export const useSetMarker = () => {
   const { data: map } = useInitializeMap();
   const { setSelectAuction } = useAuctionStore();
 
   const setMarker = (auction: Auction) => {
-    const { x, y } = auction.bjdInfo.location;
+    const x = auction.auctionObject.longitude;
+    const y = auction.auctionObject.latitude;
     const position = new naver.maps.LatLng(y, x);
 
     const marker = new naver.maps.Marker({ position, map });
@@ -20,8 +21,10 @@ export const useSetMarker = () => {
     return marker;
   };
 
-  const setMarkers = (auctions: Auction[]) => {
-    return auctions.map((auction) => setMarker(auction));
+  const setMarkers = (auctionGroups: GeoAuctionGroup[]) => {
+    return auctionGroups
+      .map((group) => group.auctions.map((auction) => setMarker(auction)))
+      .flat();
   };
 
   return { setMarker, setMarkers };

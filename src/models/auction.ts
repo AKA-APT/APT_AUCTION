@@ -5,78 +5,45 @@ export interface AuctionParams {
   rtLng: number;
 }
 
-interface Location {
-  x: number;
-  y: number;
-}
-
-interface BjdInfo {
-  sd: string;
-  sgg: string;
-  emd: string;
-  bjdCode: string;
-  location: Location;
-}
-
-interface History {
-  auctionId: string;
-  caseId: string;
-  caseSite: string;
-  itemNumber: number;
-  historyOrder: number;
-  appointedDayType: string;
-  appointedDayAt: string;
-  numberOfFailures: number;
-  lowestSellingPrice: number | null;
-  results: string | null;
-}
-
-interface ObjectInfo {
-  auctionId: string;
-  caseId: string;
-  caseSite: string;
-  itemNumber: number;
-  objectNumber: number;
-  objectType: string;
-  usage: string;
-  objectAddress: string;
-  groundTotalArea: number;
-  buildingTotalArea: number;
-}
-
-interface LandInfo {
-  pnu: string | null;
-  bjdCode: string | null;
-  landPurposeName1: string | null;
-  landUseName: string | null;
-  area: number | null;
-  usagePlanItems: any[];
+export interface GeoAuctionGroup {
+  latitude: number;
+  longitude: number;
+  totalCount: number;
+  auctions: Auction[];
 }
 
 export interface Auction {
   id: string;
-  keyword: string | null;
-  biddingDate: string;
-  pnu: string;
-  location: Location;
-  bjdCode: string;
-  bjdInfo: BjdInfo;
-  registrationDate: string;
-  sellingDate: string | null;
-  category: string;
-  danjiId: string | null;
-  pyeong: number | null;
-  appraisedPrice: number;
-  lowestSellingPrice: number;
-  sellingPrice: number | null;
-  numberOfFailures: number;
-  biddingDepositMin: number;
-  biddingDepositMax: number;
-  biddingDepositPercentMin: number;
-  biddingDepositPercentMax: number;
-  itemStatus: string;
-  historyList: History[];
-  objectList: ObjectInfo[];
-  occupantInfoList: any[];
-  landInfo: LandInfo;
+  caseBaseInfo: CaseBaseInfo;
+  auctionObject: AuctionObject;
+}
+
+interface CaseBaseInfo {
+  courtCode: string;
+  courtName: string;
+  supportCourtName: string;
+  caseNumber: string;
+  caseType: string;
+  caseReceivedDate: string;
+  caseDecisionDate: string;
+  claimAmount: number;
+  auctionSuspensionStatus: string;
+  departmentCode: string;
+  departmentName: string;
+  departmentPhone: string;
+  lawsuitTypeCode: string;
+  userCaseNumber: string;
+}
+
+interface AuctionObject {
+  courtCode: string;
+  caseNumber: string;
+  objectSequence: number;
+  propertyType: string | null;
+  buildingStructure: string | null;
+  appraisedValue: number;
+  landUseCode: string;
+  latitude: number;
+  longitude: number;
+  address: string;
 }
