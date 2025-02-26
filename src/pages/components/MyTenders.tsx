@@ -14,11 +14,11 @@ export function MyTenders() {
           >
             <div className="p-4">
               <h3 className="text-lg font-semibold">
-                {tender.auction.objectList[0].objectAddress}
+                {tender.auction.auctionObject.address}
               </h3>
               <p className="text-gray-600">{tender.tenderCost}</p>
               <p className="text-gray-600">
-                {tender.auction.lowestSellingPrice}
+                {tender.auction.auctionObject.appraisedValue}
               </p>
             </div>
           </div>

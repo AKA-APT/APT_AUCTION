@@ -2,11 +2,17 @@ import { useAuctionStore } from '@/stores/useAuctionStore';
 import { useInitializeMap } from './useInitializeMap';
 import { Auction, GeoAuctionGroup } from '@/models/auction';
 
+const MarkerCache = new Map<string, naver.maps.Marker>();
+
 export const useSetMarker = () => {
   const { data: map } = useInitializeMap();
   const { setSelectAuction } = useAuctionStore();
 
-  const setMarker = (auction: Auction) => {
+  const setMarker = async (auction: Auction) => {
+    const cachedMarker = MarkerCache.get(auction.id);
+    if (cachedMarker != null) {
+      return cachedMarker;
+    }
     const x = auction.auctionObject.longitude;
     const y = auction.auctionObject.latitude;
     const position = new naver.maps.LatLng(y, x);
@@ -18,13 +24,19 @@ export const useSetMarker = () => {
       setSelectAuction(auction);
     });
 
+    MarkerCache.set(auction.id, marker);
+
     return marker;
   };
 
-  const setMarkers = (auctionGroups: GeoAuctionGroup[]) => {
-    return auctionGroups
-      .map((group) => group.auctions.map((auction) => setMarker(auction)))
-      .flat();
+  const setMarkers = async (auctionGroups: GeoAuctionGroup[]) => {
+    const res = [];
+    for (let i = 0; i < auctionGroups.length; i++) {
+      for (let j = 0; j < auctionGroups[i].auctions.length; j++) {
+        res.push(await setMarker(auctionGroups[i].auctions[j]));
+      }
+    }
+    return res;
   };
 
   return { setMarker, setMarkers };

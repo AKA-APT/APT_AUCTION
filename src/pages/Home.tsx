@@ -27,8 +27,10 @@ function MerkerRenderer() {
   const { setCluster } = useSetCluster();
 
   useEffect(() => {
-    const markers = setMarkers(auctions);
-    setCluster({ map, markers });
+    (async function () {
+      const markers = await setMarkers(auctions);
+      setCluster({ map, markers });
+    })();
   }, [auctions, setMarkers]);
 
   useEffect(() => {
