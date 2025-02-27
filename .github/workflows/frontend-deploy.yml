@@ -1,4 +1,4 @@
-name: Frontend Deploy
+name: deploy-front
 
 on:
   workflow_dispatch:
@@ -9,10 +9,10 @@ on:
 
 jobs:
   deploy:
-    runs-on: DEPLOY-RUNNER
+    runs-on: self-hosted
 
     steps:
-      - name: Change permission
+      - name: change permission
         run: |
           sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/APT_AUCTION
 
@@ -36,20 +36,3 @@ jobs:
         run: |
           sudo rm -rf /var/www/html/*
           sudo cp -r dist/* /var/www/html/
-
-      - name: Health check
-        run: |
-          echo "Checking if frontend is accessible..."
-          if curl -f http://localhost; then
-            echo "Frontend application is accessible"
-          else
-            echo "Frontend application is not accessible"
-            sudo systemctl status nginx
-            exit 1
-          fi
-
-      - name: Check nginx logs
-        if: always()
-        run: |
-          echo "Recent nginx logs:"
-          sudo tail -n 100 /var/log/nginx/error.log
