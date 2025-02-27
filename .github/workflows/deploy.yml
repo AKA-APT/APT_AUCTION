@@ -26,13 +26,18 @@ jobs:
           node-version: '20'
           cache: 'yarn'
 
+      - name: Install Yarn
+        run: |
+          npm install -g yarn
+          yarn --version
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
       - name: Build
         run: yarn build
         env:
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}  # 필요한 환경 변수 설정
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       - name: Deploy to nginx
         run: |
