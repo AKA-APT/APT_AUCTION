@@ -11,12 +11,11 @@ jobs:
   deploy:
     runs-on: 
       - self-hosted
-      - frontend
 
     steps:
       - name: Change permission
         run: |
-          sudo chown -R ubuntu:ubuntu /home/ubuntu/frontend-actions-runner/_work/APT_AUCTION
+          sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/APT_AUCTION
 
       - uses: actions/checkout@v3
 
@@ -25,11 +24,6 @@ jobs:
         with:
           node-version: '20'
           cache: 'yarn'
-
-      - name: Install Yarn
-        run: |
-          npm install -g yarn
-          yarn --version
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
