@@ -1,0 +1,57 @@
+name: Frontend Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - build/deploy-script
+
+jobs:
+  deploy:
+    runs-on: 
+      - self-hosted
+      - frontend
+
+    steps:
+      - name: Change permission
+        run: |
+          sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/APT_AUCTION
+
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        run: yarn build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}  # 필요한 환경 변수 설정
+
+      - name: Deploy to nginx
+        run: |
+          sudo rm -rf /var/www/html/*
+          sudo cp -r dist/* /var/www/html/
+
+      - name: Health check
+        run: |
+          echo "Checking if frontend is accessible..."
+          if curl -f http://localhost; then
+            echo "Frontend application is accessible"
+          else
+            echo "Frontend application is not accessible"
+            sudo systemctl status nginx
+            exit 1
+          fi
+
+      - name: Check nginx logs
+        if: always()
+        run: |
+          echo "Recent nginx logs:"
+          sudo tail -n 100 /var/log/nginx/error.log
