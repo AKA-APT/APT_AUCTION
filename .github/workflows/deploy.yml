@@ -9,8 +9,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: 
-      - self-hosted
+    runs-on: self-hosted
 
     steps:
       - name: Change permission
