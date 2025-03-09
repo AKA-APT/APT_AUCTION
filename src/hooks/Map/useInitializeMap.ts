@@ -30,8 +30,8 @@ export function useInitializeMap() {
   const { data } = useSuspenseQuery({
     queryKey: ['naver-map'],
     queryFn: () => initializeNaverMap(),
-    staleTime: Infinity,
-    refetchOnMount: false,
+    staleTime: 0,
+    refetchOnMount: true,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     gcTime: Infinity,

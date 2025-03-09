@@ -1,8 +1,8 @@
-import { Auction } from './auction';
+import { DetailAuction } from './auction';
 
 interface Tender {
-  id: number;
-  auction: Auction;
+  auctionId: number;
+  auction: DetailAuction;
   /** 내 입찰가 */
   tenderCost: number;
 }

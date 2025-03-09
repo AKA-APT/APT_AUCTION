@@ -15,7 +15,9 @@ export default function MyPage() {
           <MyTenders />
         </ErrorBoundary>
         <InvestmentPreferences />
-        <FavoriteListings />
+        <Suspense>
+          <FavoriteListings />
+        </Suspense>
         <RecommendedListings />
       </Suspense>
       <div className="p-8"></div>

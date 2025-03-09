@@ -1,10 +1,10 @@
-import { Auction } from '@/models/auction';
+import { SimpleAuction } from '@/models/auction';
 import { create } from 'zustand';
 
 interface AuctionStore {
-  selectedAuction: Auction | null;
+  selectedAuction: SimpleAuction | null;
   isNavOpen: boolean;
-  setSelectAuction: (auction: Auction) => void;
+  setSelectAuction: (auction: SimpleAuction) => void;
   closeNav: () => void;
 }
 
