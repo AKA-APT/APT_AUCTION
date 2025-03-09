@@ -216,6 +216,6 @@ export type DetailAuction = {
   auctionScheduleList: AuctionSchedule[];
   /** 경매 대상 물건 리스트 */
   auctionObjectList: AuctionObject[];
-  /** 최신 입찰 가격 */
+  /** 가장 최근 경매건의 최저입찰가 */
   latestBiddingPrice: number;
 };

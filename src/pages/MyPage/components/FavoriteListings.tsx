@@ -18,6 +18,7 @@ export function FavoriteListings() {
               key={auction.id}
               className="overflow-hidden rounded-lg border shadow-lg"
             >
+              {/* TODO: 이미지 포함한 Card 추가 */}
               <div className="p-4">
                 <h3 className="text-lg font-semibold">
                   {auction.auctionObject.address}

@@ -1,5 +1,6 @@
 export function InvestmentPreferences() {
-  const preferences = ['수익형', '장기투자', '고위험'];
+  // TODO: 태그 색깔 추가
+  const preferences = ['수익형', '장기투자', '고위험', '생애최초'];
 
   return (
     <div className="my-8 rounded-lg bg-gray-100 p-4 shadow-md">

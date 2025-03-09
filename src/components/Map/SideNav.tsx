@@ -112,6 +112,7 @@ function 입찰하기({ auctionId }: { auctionId: string }) {
         <span>
           예상 낙찰가:{' '}
           <span className="text-blue-500">
+            {/* TODO: 계산해둔 예상 낙찰가 */}
             {commaizeNumber(auction.latestBiddingPrice)}
           </span>
           원
