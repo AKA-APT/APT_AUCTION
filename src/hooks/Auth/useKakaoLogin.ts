@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${
   import.meta.env.VITE_REST_API_KEY
-}&redirect_uri=${import.meta.env.VITE_API_URL}api/oauth/kakao/callback&response_type=code`;
+}&redirect_uri=${import.meta.env.VITE_API_URL}/api/oauth/kakao/callback&response_type=code`;
 
 export const useKakaoLogin = () => {
   const queryClient = useQueryClient();
