@@ -45,3 +45,15 @@ jobs:
           script: |
             sudo rm -rf /var/www/html/*
             sudo mkdir -p /var/www/html
+            sudo chown -R $USER:$USER /var/www/html
+
+      - name: Copy files to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "dist/*"
+          target: "/var/www/html"
+          strip_components: 1
