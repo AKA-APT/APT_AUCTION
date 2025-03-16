@@ -2,7 +2,8 @@ import {
   GeoAuctionGroup,
   AuctionParams,
   DetailAuction,
-  AcutionImage,
+  AuctionImage,
+  AuctionStatus,
 } from '@/models/auction';
 import { httpClient } from '@/utils/http-client';
 
@@ -23,5 +24,9 @@ export function getPictureLst(id: string) {
 }
 
 export function getAuctionImage(id: string) {
-  return httpClient.get<AcutionImage[] | null>(`/api/v2/auctions/${id}/images`);
+  return httpClient.get<AuctionImage[] | null>(`/api/v2/auctions/${id}/images`);
+}
+
+export function getAuctionStatus(id: string) {
+  return httpClient.get<AuctionStatus>(`/api/v2/auctions/${id}/status`);
 }

@@ -1,6 +1,6 @@
 import { AuctionCardImage } from '@/components/AuctionCardImage';
 import { Spacing } from '@/components/Spacing';
-import { useAuctionImage } from '@/hooks/queries/useAuctionImage';
+import { useAuctionStatus } from '@/hooks/queries/useAuctionStatus';
 import { useMyTenders } from '@/hooks/queries/useMyTenders';
 import type { Tender as TenderType } from '@/models/tender';
 import { commaizeNumber } from '@/utils/number';
@@ -24,13 +24,24 @@ export function MyTenders() {
 }
 
 function Tender({ tender }: { tender: TenderType }) {
+  const { data: auctionStatus } = useAuctionStatus(tender.auction.id);
+
   return (
     <div
       key={tender.auctionId}
       className="overflow-hidden rounded-lg border shadow-lg"
     >
       <div className="p-4">
-        <AuctionCardImage auctionId={tender.auction.id} />
+        {auctionStatus.status === '낙찰' ? (
+          <div>
+            <div className="">ㆍ낙찰됨</div>
+            <div className="">
+              ㆍ낙찰가: {commaizeNumber(auctionStatus.auctionPrice)}원
+            </div>
+          </div>
+        ) : (
+          <AuctionCardImage auctionId={tender.auction.id} />
+        )}
         <Spacing size={12} />
         <h3 className="text-lg font-semibold">
           {tender.auction.auctionObjectList[0].address}

@@ -232,7 +232,7 @@ export type DetailAuction = {
   evaluationList: Evaluation[];
 };
 
-export interface AcutionImage {
+export interface AuctionImage {
   picFileUrl: string;
   picTitlNm: string;
   cortAuctnPicDvsCd: string;
@@ -242,4 +242,10 @@ export interface AcutionImage {
   csNo: string;
   /** 이진 파일 */
   picFile: string;
+}
+
+export interface AuctionStatus {
+  status: string;
+  auctionDate: string;
+  auctionPrice: number;
 }
