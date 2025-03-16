@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import aptLogo from '@/assets/apt.png';
 import { useKakaoLogin } from '@/hooks/Auth/useKakaoLogin';
 import { useUser } from '@/hooks/Auth/useUser';
+import { User } from 'lucide-react';
 
 export default function TopNavigator({
   children,
