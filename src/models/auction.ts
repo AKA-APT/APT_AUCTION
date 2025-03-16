@@ -198,6 +198,16 @@ interface AuctionObject {
   address: string;
 }
 
+interface Evaluation {
+  courtCode: string;
+  caseNumber: string;
+  evaluationSequence: number;
+  evaluationCategoryCode: string;
+  evaluationItemCode: string;
+  /** 평가 내용 */
+  evaluationContent: string;
+}
+
 /**
  * 아파트 경매 상세 정보
  */
@@ -218,4 +228,18 @@ export type DetailAuction = {
   auctionObjectList: AuctionObject[];
   /** 가장 최근 경매건의 최저입찰가 */
   latestBiddingPrice: number;
+  /** 평가 리스트 */
+  evaluationList: Evaluation[];
 };
+
+export interface AcutionImage {
+  picFileUrl: string;
+  picTitlNm: string;
+  cortAuctnPicDvsCd: string;
+  cortAuctnPicSeq: string;
+  pageSeq: string;
+  cortOfcCd: string;
+  csNo: string;
+  /** 이진 파일 */
+  picFile: string;
+}

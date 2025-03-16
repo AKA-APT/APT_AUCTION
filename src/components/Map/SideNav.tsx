@@ -6,6 +6,7 @@ import { useAuctionStore } from '@/stores/useAuctionStore';
 import { commaizeNumber } from '@/utils/number';
 import { useMutation } from '@tanstack/react-query';
 import { Suspense, useState } from 'react';
+import toast from 'react-hot-toast';
 
 export function SideNav() {
   const { selectedAuction, isNavOpen } = useAuctionStore();
@@ -39,7 +40,14 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
   });
 
   return (
-    <div className="fixed left-0 top-[65px] z-10 h-[calc(100vh-65px)] w-[max(30%,24rem)] bg-white shadow-lg">
+    <div
+      className="fixed left-0 top-[65px] z-10 h-[calc(100vh-65px)] w-[max(30%,24rem)] bg-white shadow-lg"
+      style={{
+        overflowY: 'auto',
+        msOverflowStyle: 'none',
+        scrollbarWidth: 'none',
+      }}
+    >
       <div className="flex h-16 items-center justify-between border-b align-middle">
         <div className="bold p-4 text-xl font-bold">매물 정보</div>
 
@@ -71,23 +79,40 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
           {commaizeNumber(auction.disposalGoodsExecutionInfo.firstAuctionPrice)}
           원
         </div>
-        <div className="mt-4">
+        <div className="mt-2">
           감정가:{' '}
           {commaizeNumber(auction.disposalGoodsExecutionInfo.appraisedValue)}원
         </div>
-        <div className="mt-4">
+        <div className="mt-2">
           층수: {auction.disposalGoodsExecutionInfo.floorCount}층
         </div>
-        <div className="mt-4">
+        <div className="mt-2">
           구조: {auction.auctionObjectList[0]?.buildingStructure || '정보 없음'}
         </div>
-        <div className="mt-4">
+        <div className="mt-2">
           최근 거래가:{' '}
           {auction.latestBiddingPrice
             ? `${auction.latestBiddingPrice.toLocaleString()}원`
             : '정보 없음'}
         </div>
       </div>
+      <ul className="p-4">
+        {auction.evaluationList.map((evaluation) => (
+          <li
+            key={evaluation.evaluationItemCode}
+            style={{
+              border: '1px solid #c9e1ff',
+              backgroundColor: '#f9fdff',
+              padding: '4px',
+              marginTop: 4,
+              borderRadius: 4,
+            }}
+          >
+            <div className="font-bold">ㆍ{evaluation.evaluationItemCode}</div>
+            {evaluation.evaluationContent}
+          </li>
+        ))}
+      </ul>
       <입찰하기 auctionId={auctionId} />
     </div>
   );
@@ -99,12 +124,16 @@ function 입찰하기({ auctionId }: { auctionId: string }) {
   const { mutate: handleBidding } = useMutation({
     mutationFn: () => {
       if (biddingPrice == null) return Promise.reject('biddingPrice is null');
-      return addTender({ auctionId, amount: biddingPrice });
+      return toast.promise(addTender({ auctionId, amount: biddingPrice }), {
+        loading: '입찰 진행중..',
+        success: '입찰에 성공했습니다.',
+        error: (err) => `${err.response.data.message}`,
+      });
     },
   });
 
   return (
-    <div className="absolute bottom-0 w-full">
+    <div className="sticky bottom-0 w-full">
       <div className="flex h-12 items-center justify-center bg-gray-100">
         최저 입찰가: {commaizeNumber(auction.latestBiddingPrice)}원
       </div>

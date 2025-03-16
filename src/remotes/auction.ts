@@ -2,6 +2,7 @@ import {
   GeoAuctionGroup,
   AuctionParams,
   DetailAuction,
+  AcutionImage,
 } from '@/models/auction';
 import { httpClient } from '@/utils/http-client';
 
@@ -19,4 +20,8 @@ export function toggleLikeAuction(id: string) {
 
 export function getPictureLst(id: string) {
   return httpClient.get<string[]>(`/api/v2/auctions/${id}/pictures`);
+}
+
+export function getAuctionImage(id: string) {
+  return httpClient.get<AcutionImage[] | null>(`/api/v2/auctions/${id}/images`);
 }

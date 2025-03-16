@@ -1,6 +1,6 @@
 import { DetailAuction } from './auction';
 
-interface Tender {
+export interface Tender {
   auctionId: number;
   auction: DetailAuction;
   /** 내 입찰가 */

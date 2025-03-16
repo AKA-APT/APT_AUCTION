@@ -24,11 +24,11 @@ export const useSetCluster = () => {
       () =>
         new MarkerClustering({
           minClusterSize: 2,
-          maxZoom: 13,
+          maxZoom: 15,
           map: map,
           markers: markers,
           disableClickZoom: false,
-          gridSize: 120,
+          gridSize: 100,
           icons: clusterUrls.map((url) => {
             const imageIcon: naver.maps.ImageIcon = {
               url,

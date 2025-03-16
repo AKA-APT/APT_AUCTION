@@ -16,6 +16,7 @@ export function useInitializeMap() {
       zoom: 17,
       scaleControl: false,
       mapDataControl: false,
+      minZoom: 14,
     };
 
     // const { latitude, longitude } = await getMyLocation();
