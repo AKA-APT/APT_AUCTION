@@ -15,9 +15,6 @@ export function UserProfile() {
           <p className="text-gray-600">USERID: {user?.providerId}</p>
         </div>
       </div>
-      <button className="rounded-lg bg-blue-500 px-4 py-2 text-white shadow-md">
-        내 투자성향 알아보기
-      </button>
     </div>
   );
 }

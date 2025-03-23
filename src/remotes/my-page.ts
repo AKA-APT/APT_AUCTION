@@ -1,4 +1,4 @@
-import { SimpleAuction } from '@/models/auction';
+import { AuctionInvestmentTag, SimpleAuction } from '@/models/auction';
 import { MyTenders } from '@/models/tender';
 import { httpClient } from '@/utils/http-client';
 
@@ -18,4 +18,12 @@ export function addTender({
 
 export function getLikeLists() {
   return httpClient.get<SimpleAuction[]>('/api/v2/auctions/interests');
+}
+
+export function getInvestmentTags() {
+  return httpClient.get<AuctionInvestmentTag[]>('/api/v2/me/investment-tags');
+}
+
+export function putInvestmentTags(tags: number[]) {
+  return httpClient.put('/api/v2/me/investment-tags', tags);
 }

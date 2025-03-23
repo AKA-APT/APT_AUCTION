@@ -11,7 +11,9 @@ export default function MyPage() {
     <div className="container mx-auto p-4">
       <Suspense>
         <UserProfile />
-        <InvestmentPreferences />
+        <Suspense>
+          <InvestmentPreferences />
+        </Suspense>
         <ErrorBoundary fallback={null}>
           <MyTenders />
         </ErrorBoundary>

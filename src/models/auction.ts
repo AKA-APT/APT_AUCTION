@@ -251,7 +251,7 @@ export interface AuctionStatus {
 }
 
 export interface AuctionInvestmentTag {
-  id: string;
+  id: number;
   name: string;
   description: string;
 }

@@ -9,6 +9,7 @@ export function InvestmentTags({ auctionId }: { auctionId: string }) {
       {investmentTags.map((tag) => (
         <InvestmentTag
           key={tag.id}
+          id={tag.id}
           name={tag.name}
           description={tag.description}
         />
@@ -137,9 +138,13 @@ export const tagInfo = {
 export function InvestmentTag({
   name,
   description,
+  onClick,
+  id,
 }: {
+  id: number;
   name: string;
   description: string;
+  onClick?: (id: number) => void;
 }) {
   const tagName = name as keyof typeof tagColors;
   return (
@@ -148,6 +153,7 @@ export function InvestmentTag({
       <div
         data-tooltip-id={name}
         data-tooltip-content={description}
+        onClick={() => onClick?.(id)}
         className={`${tagColors[tagName].bgColor} ${tagColors[tagName].borderColor} rounded-full px-2 py-1 text-xs text-white`}
       >
         {name}
