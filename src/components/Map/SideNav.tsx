@@ -1,3 +1,5 @@
+import { AuctionCardImage } from '@/components/AuctionCardImage';
+import { InvestmentTags } from '@/components/InvestmentTag';
 import { useAuction } from '@/hooks/queries/useAuction';
 import { SimpleAuction } from '@/models/auction';
 import { toggleLikeAuction } from '@/remotes/auction';
@@ -39,9 +41,15 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
     },
   });
 
+  const auctionSchedules = auction.auctionScheduleList.slice(
+    0,
+    // 마지막 건은 매각기일 예정일이므로 제외
+    auction.auctionScheduleList.length - 1,
+  );
+
   return (
     <div
-      className="fixed left-0 top-[65px] z-10 h-[calc(100vh-65px)] w-[max(30%,24rem)] bg-white shadow-lg"
+      className="fixed left-0 top-[65px] z-10 h-[calc(100vh-65px)] w-[max(40%,24rem)] bg-white shadow-lg"
       style={{
         overflowY: 'auto',
         msOverflowStyle: 'none',
@@ -70,6 +78,11 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
           ✕
         </button>
       </div>
+      <div className="pl-4 pt-4">
+        <Suspense>
+          <InvestmentTags auctionId={auctionId} />
+        </Suspense>
+      </div>
       <div className="p-4">
         <h2 className="text-xl font-bold">
           {auction.auctionObjectList[0]?.address || '주소 정보 없음'}
@@ -96,6 +109,25 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
             : '정보 없음'}
         </div>
       </div>
+      <div className="p-4">
+        <AuctionCardImage auctionId={auctionId} />
+      </div>
+      {auctionSchedules.length < 1 ? null : (
+        <>
+          <div className="mt-1 border-b pb-1 pl-4 text-xl font-bold">
+            경매일정
+          </div>
+          <ul className="p-4">
+            {auctionSchedules.map((schedule) => (
+              <li key={schedule.auctionDate}>
+                {schedule.auctionDate} - 최저입찰가:{' '}
+                {commaizeNumber(schedule.totalAuctionPrice)}원
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      <div className="mt-1 border-b pb-1 pl-4 text-xl font-bold">감정평가</div>
       <ul className="p-4">
         {auction.evaluationList.map((evaluation) => (
           <li

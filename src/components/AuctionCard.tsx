@@ -22,7 +22,7 @@ export function AuctionCard({ auction }: { auction: DetailAuction }) {
     <div className="">
       <AuctionCardImage auctionId={auction.id} />
 
-      <div className="mb-2 flex items-center justify-between">
+      <div className="mb-2 mt-2 flex items-center justify-between">
         <div className="flex items-center">
           <Building className="h-5 w-5" />
           <span className="ml-1 text-sm text-gray-500">아파트</span>
@@ -50,14 +50,10 @@ export function AuctionCard({ auction }: { auction: DetailAuction }) {
         <div className="flex items-center text-sm">
           <AlertTriangle className="mr-2 h-4 w-4 text-gray-500" />
           <span className="text-gray-500">감정가:</span>
-          <span className="ml-auto font-medium">
+          <span className="ml-auto">
             {commaizeNumber(auction.disposalGoodsExecutionInfo.appraisedValue)}
+            원
           </span>
-        </div>
-        <div className="flex items-center text-sm">
-          <TrendingUp className="mr-2 h-4 w-4 text-blue-500" />
-          <span className="text-gray-500">예상 수익률:</span>
-          <span className="ml-auto font-medium text-blue-600">{12.5}%</span>
         </div>
       </div>
     </div>

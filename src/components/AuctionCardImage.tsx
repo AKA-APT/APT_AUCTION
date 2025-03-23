@@ -21,7 +21,11 @@ function CardImage({ auctionId }: { auctionId: string }) {
         display: 'flex',
         gap: '8px',
       }}
+      className="relative"
     >
+      <div className="absolute left-2 top-2 rounded-full border-2 bg-orange-600 px-2 py-1 pr-4 text-white">
+        ㆍ경매예정
+      </div>
       {imageList.map((image) => {
         const imageUrl = `data:image/jpeg;base64,${image.picFile}`;
 
@@ -47,7 +51,7 @@ function CardImage({ auctionId }: { auctionId: string }) {
       className="flex items-center justify-center bg-gray-200"
       style={{ height: '200px' }}
     >
-      이미지 없음
+      경매를 마친 매물이예요
     </div>
   );
 }

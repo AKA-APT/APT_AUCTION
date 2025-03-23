@@ -4,6 +4,7 @@ import {
   DetailAuction,
   AuctionImage,
   AuctionStatus,
+  AuctionInvestmentTag,
 } from '@/models/auction';
 import { httpClient } from '@/utils/http-client';
 
@@ -29,4 +30,10 @@ export function getAuctionImage(id: string) {
 
 export function getAuctionStatus(id: string) {
   return httpClient.get<AuctionStatus>(`/api/v2/auctions/${id}/status`);
+}
+
+export function getAuctionInvestmentTags(id: string) {
+  return httpClient.get<AuctionInvestmentTag[]>(
+    `/api/v2/auctions/${id}/investment-tags`,
+  );
 }

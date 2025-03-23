@@ -249,3 +249,9 @@ export interface AuctionStatus {
   auctionDate: string;
   auctionPrice: number;
 }
+
+export interface AuctionInvestmentTag {
+  id: string;
+  name: string;
+  description: string;
+}
