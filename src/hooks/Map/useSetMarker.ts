@@ -30,6 +30,11 @@ export const useSetMarker = () => {
   };
 
   const setMarkers = async (auctionGroups: GeoAuctionGroup[]) => {
+    // destroy all markers
+    MarkerCache.forEach((marker) => {
+      marker.setMap(null);
+    });
+    MarkerCache.clear();
     const res = [];
     for (let i = 0; i < auctionGroups.length; i++) {
       for (let j = 0; j < auctionGroups[i].auctions.length; j++) {

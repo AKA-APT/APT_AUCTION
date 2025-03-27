@@ -3,14 +3,14 @@ import { useInitializeMap } from '@/hooks/Map/useInitializeMap';
 import { useSetMarker } from '@/hooks/Map/useSetMarker';
 import { useAuctions } from '@/hooks/queries/useAuctions';
 import { Suspense, useEffect, useState } from 'react';
-import { useSetCluster } from '@/hooks/Map/useSetCluster';
+import { FilterBar } from '@/components/Map/FilterBar';
 
 function MapRenderer() {
   useInitializeMap();
   return null;
 }
 
-function MerkerRenderer() {
+function MerkerRenderer({ failedBidCount }: { failedBidCount: number }) {
   const { data: map } = useInitializeMap();
   const [{ lbLat, lbLng, rtLat, rtLng }, setLatLngBounds] = useState(() => {
     const latLngBounds = map.getBounds();
@@ -21,16 +21,18 @@ function MerkerRenderer() {
       rtLng: latLngBounds.maxX(),
     };
   });
-  const { data: auctions } = useAuctions({ lbLat, lbLng, rtLat, rtLng });
+  const { data: auctions } = useAuctions({
+    lbLat,
+    lbLng,
+    rtLat,
+    rtLng,
+    failedBidCount,
+  });
 
   const { setMarkers } = useSetMarker();
-  const { setCluster } = useSetCluster();
 
   useEffect(() => {
-    (async function () {
-      const markers = await setMarkers(auctions);
-      setCluster({ map, markers });
-    })();
+    setMarkers(auctions);
   }, [auctions, setMarkers]);
 
   useEffect(() => {
@@ -51,13 +53,18 @@ function MerkerRenderer() {
 }
 
 export default function Home() {
+  const [failedBidCount, setFailedBidCount] = useState(0);
   return (
     <>
       <SideNav />
+      <FilterBar
+        failedBidCount={failedBidCount}
+        setFailedBidCount={setFailedBidCount}
+      />
       <div id={'map'} style={{ height: 'calc(100vh - 66px)' }} />
       <Suspense>
         <MapRenderer />
-        <MerkerRenderer />
+        <MerkerRenderer failedBidCount={failedBidCount} />
       </Suspense>
     </>
   );

@@ -140,7 +140,7 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
               borderRadius: 4,
             }}
           >
-            <div className="font-bold">ㆍ{evaluation.evaluationItemCode}</div>
+            <div className="font-bold">ㆍ{evaluation.evaluationItem}</div>
             {evaluation.evaluationContent}
           </li>
         ))}

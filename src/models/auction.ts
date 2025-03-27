@@ -3,6 +3,7 @@ export interface AuctionParams {
   lbLng: number;
   rtLat: number;
   rtLng: number;
+  failedBidCount: number;
 }
 
 export interface GeoAuctionGroup {
@@ -203,6 +204,7 @@ interface Evaluation {
   caseNumber: string;
   evaluationSequence: number;
   evaluationCategoryCode: string;
+  evaluationItem: string;
   evaluationItemCode: string;
   /** 평가 내용 */
   evaluationContent: string;
