@@ -9,6 +9,15 @@ import { commaizeNumber } from '@/utils/number';
 import { useMutation } from '@tanstack/react-query';
 import { Suspense, useState } from 'react';
 import toast from 'react-hot-toast';
+import {
+  LuMapPin,
+  LuTag,
+  LuBuilding,
+  LuConstruction,
+  LuBadgeDollarSign,
+  LuCalendarDays,
+  LuListChecks,
+} from 'react-icons/lu';
 
 export function SideNav() {
   const { selectedAuction, isNavOpen } = useAuctionStore();
@@ -49,103 +58,139 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
 
   return (
     <div
-      className="fixed left-0 top-[65px] z-10 h-[calc(100vh-65px)] w-[max(40%,24rem)] bg-white shadow-lg"
+      className="fixed left-0 top-[65px] z-10 h-[calc(100vh-65px)] w-[max(35%,20rem)] rounded-r-lg bg-gray-50 p-2 shadow-lg"
       style={{
         overflowY: 'auto',
         msOverflowStyle: 'none',
         scrollbarWidth: 'none',
       }}
     >
-      <div className="flex h-16 items-center justify-between border-b align-middle">
-        <div className="bold p-4 text-xl font-bold">매물 정보</div>
-
-        <button
-          className="size-4items-center absolute right-12 flex justify-center rounded-none"
-          style={{ background: 'none', outline: 'none', border: 'none' }}
-          onClick={() => {
-            if (isPending) return;
-            handleLikeClick();
-          }}
-        >
-          {selectedAuction?.isInterested ? '❤️' : '🤍'}
-        </button>
-
-        <button
-          onClick={closeNav}
-          className="absolute right-4 flex size-4 h-10 w-10 items-center justify-center rounded-none bg-red-500 text-white"
-          style={{ boxSizing: 'border-box' }}
-        >
-          ✕
-        </button>
-      </div>
-      <div className="pl-4 pt-4">
-        <Suspense>
-          <InvestmentTags auctionId={auctionId} />
-        </Suspense>
-      </div>
-      <div className="p-4">
-        <h2 className="text-xl font-bold">
-          {auction.auctionObjectList[0]?.address || '주소 정보 없음'}
-        </h2>
-        <div className="mt-4">
-          최저입찰가:{' '}
-          {commaizeNumber(auction.disposalGoodsExecutionInfo.firstAuctionPrice)}
-          원
-        </div>
-        <div className="mt-2">
-          감정가:{' '}
-          {commaizeNumber(auction.disposalGoodsExecutionInfo.appraisedValue)}원
-        </div>
-        <div className="mt-2">
-          층수: {auction.disposalGoodsExecutionInfo.floorCount}층
-        </div>
-        <div className="mt-2">
-          구조: {auction.auctionObjectList[0]?.buildingStructure || '정보 없음'}
-        </div>
-        <div className="mt-2">
-          최근 거래가:{' '}
-          {auction.latestBiddingPrice
-            ? `${auction.latestBiddingPrice.toLocaleString()}원`
-            : '정보 없음'}
+      <div className="flex h-14 items-center justify-between rounded-t-md border-b bg-white px-4">
+        <div className="bold text-xl font-bold text-blue-600">매물 정보</div>
+        <div className="flex items-center">
+          <button
+            className="mr-2 flex size-4 items-center justify-center rounded-none hover:opacity-75"
+            style={{ background: 'none', outline: 'none', border: 'none' }}
+            onClick={() => {
+              if (isPending) return;
+              handleLikeClick();
+            }}
+            title={
+              selectedAuction?.isInterested
+                ? '관심 목록에서 제거'
+                : '관심 목록에 추가'
+            }
+          >
+            {selectedAuction?.isInterested ? '❤️' : '🤍'}
+          </button>
+          <button
+            onClick={closeNav}
+            className="flex size-8 items-center justify-center rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300"
+            style={{ boxSizing: 'border-box' }}
+            title="닫기"
+          >
+            ✕
+          </button>
         </div>
       </div>
-      <div className="p-4">
-        <AuctionCardImage auctionId={auctionId} />
-      </div>
-      {auctionSchedules.length < 1 ? null : (
-        <>
-          <div className="mt-1 border-b pb-1 pl-4 text-xl font-bold">
-            경매일정
+      <div className="space-y-4 p-2">
+        <div className="rounded-md border bg-white p-4 shadow-sm">
+          <Suspense>
+            <InvestmentTags auctionId={auctionId} />
+          </Suspense>
+        </div>
+        <div className="rounded-md border bg-white p-4 shadow-sm">
+          <div className="mb-3 flex items-center">
+            <LuMapPin className="mr-2 size-5 text-blue-500" />
+            <h2 className="text-lg font-semibold">
+              {auction.auctionObjectList[0]?.address || '주소 정보 없음'}
+            </h2>
           </div>
-          <ul className="p-4">
-            {auctionSchedules.map((schedule) => (
-              <li key={schedule.auctionDate}>
-                {schedule.auctionDate} - 최저입찰가:{' '}
-                {commaizeNumber(schedule.totalAuctionPrice)}원
+          <div className="space-y-2 text-sm text-gray-700">
+            <div className="flex items-center">
+              <LuTag className="mr-2 size-4 text-gray-500" />
+              <span>
+                최저입찰가:{' '}
+                {commaizeNumber(
+                  auction.disposalGoodsExecutionInfo.firstAuctionPrice,
+                )}
+                원
+              </span>
+            </div>
+            <div className="flex items-center">
+              <LuBadgeDollarSign className="mr-2 size-4 text-gray-500" />
+              <span>
+                감정가:{' '}
+                {commaizeNumber(
+                  auction.disposalGoodsExecutionInfo.appraisedValue,
+                )}
+                원
+              </span>
+            </div>
+            <div className="flex items-center">
+              <LuBuilding className="mr-2 size-4 text-gray-500" />
+              <span>
+                층수: {auction.disposalGoodsExecutionInfo.floorCount}층
+              </span>
+            </div>
+            <div className="flex items-center">
+              <LuConstruction className="mr-2 size-4 text-gray-500" />
+              <span>
+                구조:{' '}
+                {auction.auctionObjectList[0]?.buildingStructure || '정보 없음'}
+              </span>
+            </div>
+            <div className="flex items-center">
+              <LuBadgeDollarSign className="mr-2 size-4 text-gray-500" />
+              <span>
+                최근 거래가:{' '}
+                {auction.latestBiddingPrice
+                  ? `${auction.latestBiddingPrice.toLocaleString()}원`
+                  : '정보 없음'}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="rounded-md border bg-white p-4 shadow-sm">
+          <AuctionCardImage auctionId={auctionId} />
+        </div>
+        {auctionSchedules.length > 0 && (
+          <div className="rounded-md border bg-white p-4 shadow-sm">
+            <div className="mb-2 flex items-center text-xl font-bold text-blue-600">
+              <LuCalendarDays className="mr-2 size-5" />
+              경매일정
+            </div>
+            <ul className="list-disc space-y-1 pl-5 text-sm text-gray-700">
+              {auctionSchedules.map((schedule) => (
+                <li key={schedule.auctionDate}>
+                  {schedule.auctionDate} - 최저입찰가:{' '}
+                  {commaizeNumber(schedule.totalAuctionPrice)}원
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <div className="rounded-md border bg-white p-4 shadow-sm">
+          <div className="mb-2 flex items-center text-xl font-bold text-blue-600">
+            <LuListChecks className="mr-2 size-5" />
+            감정평가
+          </div>
+          <ul className="space-y-2">
+            {auction.evaluationList.map((evaluation) => (
+              <li
+                key={evaluation.evaluationItemCode}
+                className="rounded border border-blue-200 bg-blue-50 p-2 text-sm"
+              >
+                <div className="font-medium">ㆍ{evaluation.evaluationItem}</div>
+                <p className="text-gray-700">{evaluation.evaluationContent}</p>
               </li>
             ))}
           </ul>
-        </>
-      )}
-      <div className="mt-1 border-b pb-1 pl-4 text-xl font-bold">감정평가</div>
-      <ul className="p-4">
-        {auction.evaluationList.map((evaluation) => (
-          <li
-            key={evaluation.evaluationItemCode}
-            style={{
-              border: '1px solid #c9e1ff',
-              backgroundColor: '#f9fdff',
-              padding: '4px',
-              marginTop: 4,
-              borderRadius: 4,
-            }}
-          >
-            <div className="font-bold">ㆍ{evaluation.evaluationItem}</div>
-            {evaluation.evaluationContent}
-          </li>
-        ))}
-      </ul>
-      <입찰하기 auctionId={auctionId} />
+        </div>
+        <div className="sticky bottom-0 -m-2 rounded-b-lg bg-gray-50 pt-2">
+          <입찰하기 auctionId={auctionId} />
+        </div>
+      </div>
     </div>
   );
 }
@@ -164,47 +209,56 @@ function 입찰하기({ auctionId }: { auctionId: string }) {
     },
   });
 
+  const minBidPrice =
+    auction.latestBiddingPrice ||
+    auction.disposalGoodsExecutionInfo.firstAuctionPrice;
+
   return (
-    <div className="sticky bottom-0 w-full">
-      <div className="flex h-12 items-center justify-center bg-gray-100">
-        최저 입찰가: {commaizeNumber(auction.latestBiddingPrice)}원
-      </div>
-      <div className="flex h-12 items-center justify-center bg-gray-100">
-        <span>
-          예상 낙찰가:{' '}
-          <span className="text-blue-500">
-            {/* TODO: 계산해둔 예상 낙찰가 */}
-            {commaizeNumber(auction.latestBiddingPrice)}
+    <>
+      <div className="grid grid-cols-2 gap-px bg-gray-200 px-4 py-2 text-center text-sm">
+        <div className="rounded-l bg-white p-2">
+          최저 입찰가:
+          <br />{' '}
+          <span className="font-semibold">{commaizeNumber(minBidPrice)}원</span>
+        </div>
+        <div className="rounded-r bg-white p-2">
+          예상 낙찰가:
+          <br />{' '}
+          <span className="font-semibold text-blue-600">
+            {commaizeNumber(minBidPrice)}원
           </span>
-          원
-        </span>
+        </div>
       </div>
       <input
         placeholder="입찰가를 입력하세요"
-        className="h-12 w-full border-t border-gray-300 p-4"
+        className="h-12 w-full border-t border-gray-300 p-4 text-right"
         value={
           biddingPrice === null || biddingPrice === 0
-            ? undefined
+            ? ''
             : commaizeNumber(biddingPrice ?? 0)
         }
         onChange={(e) => {
           const value = e.target.value.replace(/,/g, '');
-          if (isNaN(Number(value))) {
-            return;
+          if (value === '' || /^[0-9]+$/.test(value)) {
+            setBiddingPrice(value === '' ? null : Number(value));
           }
-          setBiddingPrice(Number(value));
         }}
       />
       <button
-        className="h-12 w-full bg-blue-500 text-white"
-        style={{ borderRadius: 0 }}
+        className="h-12 w-full rounded-b-md bg-blue-500 text-white shadow-md transition-shadow hover:bg-blue-600 hover:shadow-lg"
         onClick={() => {
-          if (biddingPrice == null) return;
+          if (biddingPrice == null || biddingPrice < minBidPrice) {
+            toast.error(
+              `입찰가는 최저 입찰가(${commaizeNumber(minBidPrice)}원) 이상이어야 합니다.`,
+            );
+            return;
+          }
           handleBidding();
         }}
+        disabled={biddingPrice === null}
       >
         입찰하기
       </button>
-    </div>
+    </>
   );
 }
