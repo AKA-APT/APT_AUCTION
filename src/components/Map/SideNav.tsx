@@ -19,6 +19,9 @@ import {
   LuListChecks,
 } from 'react-icons/lu';
 import { useAuctionImage } from '@/hooks/queries/useAuctionImage';
+import { useNavigate } from 'react-router-dom';
+import { useKakaoLogin } from '@/hooks/Auth/useKakaoLogin';
+import { useUser } from '@/hooks/Auth/useUser';
 
 export function SideNav() {
   const { selectedAuction, isNavOpen } = useAuctionStore();
@@ -213,7 +216,7 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
           </ul>
         </div>
         <div className="sticky bottom-0 pt-2 -m-2 rounded-b-lg bg-gray-50">
-          <입찰하기 auctionId={auctionId} />
+          <MockAuctionButton auctionId={auctionId} />
         </div>
       </div>
       {isModalOpen && imageList && imageList.length > 0 && (
@@ -285,23 +288,28 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
   );
 }
 
-function 입찰하기({ auctionId }: { auctionId: string }) {
+function MockAuctionButton({ auctionId }: { auctionId: string }) {
   const { data: auction } = useAuction(auctionId);
-  const [biddingPrice, setBiddingPrice] = useState<number | null>(null);
-  const { mutate: handleBidding } = useMutation({
-    mutationFn: () => {
-      if (biddingPrice == null) return Promise.reject('biddingPrice is null');
-      return toast.promise(addTender({ auctionId, amount: biddingPrice }), {
-        loading: '입찰 진행중..',
-        success: '입찰에 성공했습니다.',
-        error: (err) => `${err.response.data.message}`,
-      });
-    },
-  });
+  const { data: user } = useUser();
+  const { login } = useKakaoLogin();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  if (!auction) return null;
 
   const minBidPrice =
     auction.latestBiddingPrice ||
     auction.disposalGoodsExecutionInfo.firstAuctionPrice;
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const handleClick = () => {
+    if (user) {
+      openModal();
+    } else {
+      login();
+    }
+  };
 
   return (
     <>
@@ -319,36 +327,197 @@ function 입찰하기({ auctionId }: { auctionId: string }) {
           </span>
         </div>
       </div>
-      <input
-        placeholder="입찰가를 입력하세요"
-        className="w-full h-12 p-4 text-right border-t border-gray-300"
-        value={
-          biddingPrice === null || biddingPrice === 0
-            ? ''
-            : commaizeNumber(biddingPrice ?? 0)
-        }
-        onChange={(e) => {
-          const value = e.target.value.replace(/,/g, '');
-          if (value === '' || /^[0-9]+$/.test(value)) {
-            setBiddingPrice(value === '' ? null : Number(value));
-          }
-        }}
-      />
       <button
         className="w-full h-12 text-white transition-shadow bg-blue-500 shadow-md rounded-b-md hover:bg-blue-600 hover:shadow-lg"
-        onClick={() => {
-          if (biddingPrice == null || biddingPrice < minBidPrice) {
-            toast.error(
-              `입찰가는 최저 입찰가(${commaizeNumber(minBidPrice)}원) 이상이어야 합니다.`,
-            );
-            return;
-          }
-          handleBidding();
-        }}
-        disabled={biddingPrice === null}
+        onClick={handleClick}
       >
-        입찰하기
+        모의 낙찰하기
       </button>
+
+      {isModalOpen && (
+        <MockAuctionModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          auctionId={auctionId}
+          minBidPrice={minBidPrice}
+          auctionItem={auction}
+        />
+      )}
     </>
+  );
+}
+
+interface MockAuctionModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  auctionId: string;
+  minBidPrice: number;
+  auctionItem: any;
+}
+
+function MockAuctionModal({
+  isOpen,
+  onClose,
+  auctionId,
+  minBidPrice,
+  auctionItem,
+}: MockAuctionModalProps) {
+  const navigate = useNavigate();
+  const [bidAmount, setBidAmount] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isMockAuctionComplete, setIsMockAuctionComplete] = useState(false);
+
+  const { mutate: handleMockAuction, isPending } = useMutation({
+    mutationFn: (amount: number) => {
+      return toast.promise(addTender({ auctionId, amount }), {
+        loading: '모의 낙찰 진행 중...',
+        success: '모의 낙찰이 완료되었습니다.',
+        error: (err: any) =>
+          `모의 낙찰 중 오류가 발생했습니다: ${err?.response?.data?.message || err.message}`,
+      });
+    },
+    onSuccess: () => {
+      setIsMockAuctionComplete(true);
+      setBidAmount(null);
+      setError(null);
+    },
+    onError: (err: any) => {
+      console.error('Mock auction failed:', err);
+    },
+  });
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/,/g, '');
+    if (value === '' || /^[0-9]+$/.test(value)) {
+      const amount = value === '' ? null : Number(value);
+      setBidAmount(amount);
+      if (amount !== null && amount < minBidPrice) {
+        setError(
+          `입찰가는 최소 낙찰가(${commaizeNumber(minBidPrice)}원) 이상이어야 합니다.`,
+        );
+      } else {
+        setError(null);
+      }
+    }
+  };
+
+  const submitMockAuction = () => {
+    if (bidAmount === null) {
+      setError('입찰가를 입력해주세요.');
+      return;
+    }
+    if (bidAmount < minBidPrice) {
+      setError(
+        `입찰가는 최소 낙찰가(${commaizeNumber(minBidPrice)}원) 이상이어야 합니다.`,
+      );
+      return;
+    }
+    handleMockAuction(bidAmount);
+  };
+
+  const goToMyPage = () => {
+    navigate('/my-page');
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-xl">
+        {!isMockAuctionComplete ? (
+          <>
+            <h2 className="mb-4 text-xl font-bold">모의 낙찰하기</h2>
+
+            <div className="p-3 mb-4 text-sm text-yellow-800 bg-yellow-100 border border-yellow-200 rounded">
+              <p>
+                · 모의 낙찰은 실제 거래가 아니며, 결과는 마이페이지에서 확인할
+                수 있습니다.
+              </p>
+              <p>
+                · 입력한 금액이 최소 입찰가(낙찰가) 이상이어야 모의 낙찰이
+                가능합니다.
+              </p>
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="bidAmount" className="block mb-1 font-medium">
+                입찰가 입력
+              </label>
+              <input
+                id="bidAmount"
+                type="text"
+                placeholder="입찰가를 입력하세요"
+                className={`w-full p-2 border rounded ${error ? 'border-red-500' : 'border-gray-300'}`}
+                value={
+                  bidAmount === null || bidAmount === 0
+                    ? ''
+                    : commaizeNumber(bidAmount)
+                }
+                onChange={handleAmountChange}
+              />
+              {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+              <p className="mt-1 text-xs text-gray-500">
+                최소 낙찰가: {commaizeNumber(minBidPrice)}원
+              </p>
+            </div>
+
+            <div className="p-3 mb-4 text-sm text-blue-800 bg-blue-100 border border-blue-200 rounded">
+              <p>
+                · 입찰가는 최소 낙찰가 이상이어야 하며, 예상 낙찰가는 최근 입찰
+                결과를 기반으로 산정됩니다.
+              </p>
+              <p>· 모의 낙찰 결과는 실제 경매 결과와 다를 수 있습니다.</p>
+            </div>
+
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={onClose}
+                className="px-4 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
+              >
+                취소
+              </button>
+              <button
+                onClick={submitMockAuction}
+                className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 disabled:opacity-50"
+                disabled={bidAmount === null || !!error || isPending}
+              >
+                {isPending ? '처리 중...' : '모의 낙찰하기'}
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <h2 className="mb-4 text-xl font-bold text-center text-green-600">
+              모의 낙찰 완료!
+            </h2>
+            <div className="p-4 mb-4 text-center text-green-800 bg-green-100 border border-green-200 rounded">
+              <p>모의 낙찰이 완료되었습니다.</p>
+              <p className="mt-1">
+                모의 낙찰한 매물은 [마이페이지 - 내 입찰 현황]에서 확인할 수
+                있습니다.
+              </p>
+            </div>
+            <div className="flex flex-col items-center space-y-2">
+              <button
+                onClick={goToMyPage}
+                className="w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+              >
+                마이페이지로 바로 가기
+              </button>
+              <button
+                onClick={() => {
+                  setIsMockAuctionComplete(false);
+                  onClose();
+                }}
+                className="w-full px-4 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
+              >
+                닫기
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
   );
 }
