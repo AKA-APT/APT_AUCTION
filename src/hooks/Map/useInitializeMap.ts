@@ -22,7 +22,7 @@ export function useInitializeMap() {
     // const { latitude, longitude } = await getMyLocation();
     const newMap = new naver.maps.Map('map', {
       ...mapOption,
-      center: new naver.maps.LatLng(37.5860921241776, 126.701476130149),
+      center: new naver.maps.LatLng(37.496486063, 127.028361548),
     });
 
     return newMap;
