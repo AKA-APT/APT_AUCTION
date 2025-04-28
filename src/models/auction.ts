@@ -15,10 +15,11 @@ export interface GeoAuctionGroup {
 
 export interface SimpleAuction {
   id: string;
-  caseBaseInfo: CaseBaseInfo;
   auctionObject: AuctionObject;
-  isBidding: boolean;
+  auctionStatus: AuctionStatus;
   isInterested: boolean;
+  isBidding: boolean;
+  investmentTags: string[];
 }
 
 /**
@@ -250,6 +251,10 @@ export interface AuctionStatus {
   status: string;
   auctionDate: string;
   auctionPrice: number;
+  minimumPrice: number;
+  appraisedValue: number;
+  ruptureCount: number;
+  propertyUsage: string;
 }
 
 export interface AuctionInvestmentTag {
