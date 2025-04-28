@@ -12,10 +12,6 @@
   "editor.quickSuggestions": {
     "strings": true
   },
-  "tailwindCSS.includeLanguages": {
-    "typescript": "javascript",
-    "typescriptreact": "javascript"
-  },
   "editor.inlineSuggest.enabled": true,
   "eslint.validate": ["javascript", "typescript", "typescriptreact"],
   "[typescriptreact]": {
