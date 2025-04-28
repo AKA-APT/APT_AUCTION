@@ -13,18 +13,21 @@ export default function TopNavigator({
   const { login, logout } = useKakaoLogin();
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="border-b bg-white">
-        <div className="flex h-16 items-center justify-between px-4">
+    <div className="flex flex-col min-h-screen">
+      <header className="bg-white border-b">
+        <div className="flex items-center justify-between h-16 px-4">
           <Link to="/">
-            <img src={aptLogo} alt="APT 로고" className="h-8 w-auto" />
+            <img src={aptLogo} alt="APT 로고" className="w-auto h-8" />
           </Link>
           {user ? (
             <div className="flex items-center gap-4">
-              <Link to="/my-page">{user.nickname}</Link>
+              <Link to="/my-page" className="flex items-center gap-2">
+                <User className="w-5 h-5" />
+                <span>{user.nickname}</span>
+              </Link>
               <button
                 onClick={logout}
-                className="rounded-lg bg-gray-200 px-4 py-2 text-sm text-black"
+                className="px-4 py-2 text-sm text-black bg-gray-200 rounded-lg"
               >
                 로그아웃
               </button>

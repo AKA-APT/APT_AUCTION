@@ -129,7 +129,7 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
         </div>
         <div className="p-4 bg-white border rounded-md shadow-sm">
           <div className="flex items-center mb-3">
-            <LuMapPin className="mr-2 text-blue-500 size-5" />
+            <LuMapPin className="mr-2 text-blue-500 size-6" />
             <h2 className="text-lg font-semibold">
               {auction.auctionObjectList[0]?.address || '주소 정보 없음'}
             </h2>
