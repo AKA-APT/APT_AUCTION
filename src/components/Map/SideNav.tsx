@@ -1,7 +1,6 @@
 import { AuctionCardImage } from '@/components/AuctionCardImage';
 import { InvestmentTags } from '@/components/InvestmentTag';
 import { useAuction } from '@/hooks/queries/useAuction';
-import { SimpleAuction } from '@/models/auction';
 import { toggleLikeAuction } from '@/remotes/auction';
 import { addTender } from '@/remotes/my-page';
 import { useAuctionStore } from '@/stores/useAuctionStore';
@@ -22,6 +21,7 @@ import { useAuctionImage } from '@/hooks/queries/useAuctionImage';
 import { useNavigate } from 'react-router-dom';
 import { useKakaoLogin } from '@/hooks/Auth/useKakaoLogin';
 import { useUser } from '@/hooks/Auth/useUser';
+import { usePrediction } from '@/hooks/queries/usePrediction';
 
 export function SideNav() {
   const { selectedAuction, isNavOpen } = useAuctionStore();
@@ -293,6 +293,7 @@ function MockAuctionButton({ auctionId }: { auctionId: string }) {
   const { data: user } = useUser();
   const { login } = useKakaoLogin();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { data: prediction } = usePrediction(auctionId);
 
   if (!auction) return null;
 
@@ -322,9 +323,15 @@ function MockAuctionButton({ auctionId }: { auctionId: string }) {
         <div className="p-2 bg-white rounded-r">
           예상 낙찰가:
           <br />{' '}
-          <span className="font-semibold text-blue-600">
-            {commaizeNumber(minBidPrice)}원
-          </span>
+          <Suspense
+            fallback={
+              <span className="font-semibold text-blue-600">예측 불가능</span>
+            }
+          >
+            <span className="font-semibold text-blue-600">
+              {commaizeNumber(prediction.predicted_price)}
+            </span>
+          </Suspense>
         </div>
       </div>
       <button
