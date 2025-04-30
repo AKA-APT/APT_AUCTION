@@ -10,17 +10,17 @@ export function FilterBar({
   const [filterList, setFilterList] = useState([]);
 
   return (
-    <div className="fixed right-0 top-16 z-10">
-      <div className="rounded-bl-md bg-slate-100 p-2">
+    <div className="fixed right-0 z-10 top-16">
+      <div className="p-2 rounded-bl-md bg-slate-100">
         <div>
           <button
             disabled
-            className="ml-2 rounded-lg bg-blue-500 px-4 py-2 text-white shadow-md"
+            className="px-4 py-2 ml-2 text-white bg-blue-500 rounded-lg shadow-md"
           >
             최소 유찰횟수
           </button>
           <select
-            className="ml-2 rounded-lg bg-white px-4 py-2 font-bold text-black shadow-md"
+            className="px-4 py-2 ml-2 font-bold text-black bg-white rounded-lg shadow-md"
             onChange={(e) => setFailedBidCount(Number(e.target.value))}
             value={failedBidCount}
           >

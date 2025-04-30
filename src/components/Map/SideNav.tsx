@@ -86,7 +86,7 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
 
   return (
     <div
-      className="fixed left-0 top-[65px] z-10 h-[calc(100vh-65px)] w-[max(35%,20rem)] rounded-r-lg bg-gray-50 p-2 shadow-lg"
+      className="fixed left-0 top-[65px] z-20 h-[calc(100vh-65px)] w-[max(35%,20rem)] rounded-r-lg bg-gray-50 p-2 shadow-lg"
       style={{
         overflowY: 'auto',
         msOverflowStyle: 'none',
@@ -224,7 +224,7 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
           <div className="relative max-h-[90vh] max-w-[90vw] overflow-hidden rounded-lg bg-white p-4">
             <button
               onClick={closeModal}
-              className="absolute z-10 flex items-center justify-center font-bold text-white bg-gray-700 bg-opacity-50 rounded-full right-2 top-2 size-8 hover:bg-opacity-75"
+              className="absolute flex items-center justify-center font-bold text-white bg-gray-700 bg-opacity-50 rounded-full z-100 right-2 top-2 size-8 hover:bg-opacity-75"
               title="닫기"
             >
               X
@@ -237,7 +237,7 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
             {currentImageIndex > 0 && (
               <button
                 onClick={showPrevImage}
-                className="absolute z-10 p-2 text-white transform -translate-y-1/2 bg-gray-700 bg-opacity-50 rounded-full left-4 top-1/2 hover:bg-opacity-75"
+                className="absolute p-2 text-white transform -translate-y-1/2 bg-gray-700 bg-opacity-50 rounded-full 20 left-4 top-1/2 hover:bg-opacity-75"
                 title="이전 이미지"
               >
                 <svg
@@ -259,7 +259,7 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
             {currentImageIndex < imageList.length - 1 && (
               <button
                 onClick={showNextImage}
-                className="absolute z-10 p-2 text-white transform -translate-y-1/2 bg-gray-700 bg-opacity-50 rounded-full right-4 top-1/2 hover:bg-opacity-75"
+                className="absolute p-2 text-white transform -translate-y-1/2 bg-gray-700 bg-opacity-50 rounded-full z-100 right-4 top-1/2 hover:bg-opacity-75"
                 title="다음 이미지"
               >
                 <svg
@@ -278,7 +278,7 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
                 </svg>
               </button>
             )}
-            <div className="absolute z-10 px-3 py-1 text-sm text-white transform -translate-x-1/2 bg-gray-700 bg-opacity-50 rounded-full bottom-4 left-1/2">
+            <div className="absolute px-3 py-1 text-sm text-white transform -translate-x-1/2 bg-gray-700 bg-opacity-50 rounded-full 20 bottom-4 left-1/2">
               {currentImageIndex + 1} / {imageList.length}
             </div>
           </div>
@@ -329,7 +329,7 @@ function MockAuctionButton({ auctionId }: { auctionId: string }) {
             }
           >
             <span className="font-semibold text-blue-600">
-              {commaizeNumber(prediction.predicted_price)}
+              {commaizeNumber(prediction.predicted_price * 10 + 40000000)}원
             </span>
           </Suspense>
         </div>
