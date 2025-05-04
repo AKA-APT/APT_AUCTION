@@ -5,27 +5,55 @@ import { useAuctionStatus } from '@/hooks/queries/useAuctionStatus';
 import { useMyTenders } from '@/hooks/queries/useMyTenders';
 import type { Tender as TenderType } from '@/models/tender';
 import { commaizeNumber } from '@/utils/number';
-import { ArrowBigDownDash, HandCoins, Receipt, TrendingUp } from 'lucide-react';
+import {
+  ArrowBigDownDash,
+  HandCoins,
+  Receipt,
+  TrendingUp,
+  Info,
+} from 'lucide-react';
 import { Suspense } from 'react';
 
 export function MyTenders() {
   const { data: tenders } = useMyTenders();
 
+  const realTenders = tenders?.filter((tender) => !tender.isMock) ?? [];
+  const mockTenders = tenders?.filter((tender) => tender.isMock) ?? [];
+
   return (
     <div className="my-8">
       <h2 className="mb-4 text-2xl font-bold">내 입찰 현황</h2>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Suspense>
-          {tenders.map((tender) => (
-            <Tender key={tender.auctionId} tender={tender} />
-          ))}
-        </Suspense>
-      </div>
+      {realTenders.length > 0 ? (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <Suspense>
+            {realTenders.map((tender) => (
+              <Tender key={tender.auctionId} tender={tender} isMock={false} />
+            ))}
+          </Suspense>
+        </div>
+      ) : (
+        <p className="text-gray-500">진행 중인 실제 입찰 내역이 없습니다.</p>
+      )}
+
+      <Spacing size={32} />
+
+      <h2 className="mb-4 text-2xl font-bold">모의 낙찰 현황</h2>
+      {mockTenders.length > 0 ? (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <Suspense>
+            {mockTenders.map((tender) => (
+              <Tender key={tender.auctionId} tender={tender} isMock={true} />
+            ))}
+          </Suspense>
+        </div>
+      ) : (
+        <p className="text-gray-500">진행한 모의 낙찰 내역이 없습니다.</p>
+      )}
     </div>
   );
 }
 
-function Tender({ tender }: { tender: TenderType }) {
+function Tender({ tender, isMock }: { tender: TenderType; isMock: boolean }) {
   const { data: auctionStatus } = useAuctionStatus(tender.auction.id);
   const 원금 = tender.tenderCost;
   const 감정가 = tender.auction.disposalGoodsExecutionInfo.appraisedValue;
@@ -37,48 +65,63 @@ function Tender({ tender }: { tender: TenderType }) {
   return (
     <div
       key={tender.auctionId}
-      className="relative overflow-hidden rounded-lg border shadow-lg"
+      className="relative overflow-hidden border rounded-lg shadow-lg"
     >
       <div className="p-4">
         <AuctionCard auction={tender.auction} />
-        {auctionStatus.status === '낙찰' ? (
+
+        {isMock && (
+          <div className="absolute flex items-center px-2 py-1 pr-3 text-sm font-medium text-blue-700 bg-blue-100 border-2 border-blue-500 rounded-full left-6 top-8">
+            <Info className="w-4 h-4 mr-1" /> 모의 낙찰
+          </div>
+        )}
+
+        {!isMock && auctionStatus.status === '낙찰' && (
           <div>
-            <div className="absolute left-6 top-8 rounded-full border-2 border-slate-500 bg-slate-500 px-2 py-1 pr-3 text-white">
+            <div className="absolute px-2 py-1 pr-3 text-white border-2 rounded-full left-6 top-8 border-slate-500 bg-slate-500">
               ㆍ낙찰됨
             </div>
           </div>
-        ) : null}
-        <div className="mt-2 flex items-center text-sm">
-          <ArrowBigDownDash className="mr-2 h-4 w-4" />
+        )}
+
+        <div className="flex items-center mt-2 text-sm">
+          <ArrowBigDownDash className="w-4 h-4 mr-2" />
           <span className="text-gray-900">최저 입찰가:</span>
           <span className="ml-auto font-medium">
             {commaizeNumber(tender.auction.latestBiddingPrice)}원
           </span>
         </div>
-        <div className="mt-2 flex items-center text-sm">
-          <Receipt className="mr-2 h-4 w-4 text-blue-500" />
-          <span className="text-gray-900">내 입찰가:</span>
+        <div className="flex items-center mt-2 text-sm">
+          <Receipt className="w-4 h-4 mr-2 text-blue-500" />
+          <span className="text-gray-900">
+            {isMock ? '모의 입찰가:' : '내 입찰가:'}
+          </span>
           <span className="ml-auto font-medium text-blue-600">
             {commaizeNumber(tender.tenderCost)}원
           </span>
         </div>
-        {auctionStatus.status === '낙찰' ? (
-          <div className="mt-2 flex items-center text-sm">
-            <HandCoins className="mr-2 h-4 w-4 text-blue-600" />
-            <span className="text-gray-900">낙찰가:</span>
-            <span className="ml-auto font-medium text-blue-600">
-              {commaizeNumber(auctionStatus.auctionPrice)}원
-            </span>
-          </div>
-        ) : (
+
+        {!isMock && (
           <>
-            <div className="mt-2 flex items-center text-sm">
-              <TrendingUp className="mr-2 h-4 w-4 text-blue-600" />
-              <span className="text-gray-900">예상 수익률:</span>
-              <span className="ml-auto font-medium text-blue-600">
-                {수익률.toFixed(2)}%
-              </span>
-            </div>
+            {auctionStatus.status === '낙찰' ? (
+              <div className="flex items-center mt-2 text-sm">
+                <HandCoins className="w-4 h-4 mr-2 text-blue-600" />
+                <span className="text-gray-900">낙찰가:</span>
+                <span className="ml-auto font-medium text-blue-600">
+                  {commaizeNumber(auctionStatus.auctionPrice)}원
+                </span>
+              </div>
+            ) : (
+              <>
+                <div className="flex items-center mt-2 text-sm">
+                  <TrendingUp className="w-4 h-4 mr-2 text-blue-600" />
+                  <span className="text-gray-900">예상 수익률:</span>
+                  <span className="ml-auto font-medium text-blue-600">
+                    {수익률.toFixed(2)}%
+                  </span>
+                </div>
+              </>
+            )}
           </>
         )}
       </div>

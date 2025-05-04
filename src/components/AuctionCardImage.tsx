@@ -1,15 +1,27 @@
 import { useAuctionImage } from '@/hooks/queries/useAuctionImage';
 import { Suspense } from 'react';
 
-export function AuctionCardImage({ auctionId }: { auctionId: string }) {
+export function AuctionCardImage({
+  auctionId,
+  onImageClick,
+}: {
+  auctionId: string;
+  onImageClick?: (index: number) => void;
+}) {
   return (
     <Suspense fallback={<div style={{ height: '200px' }}></div>}>
-      <CardImage auctionId={auctionId} />
+      <CardImage auctionId={auctionId} onImageClick={onImageClick} />
     </Suspense>
   );
 }
 
-function CardImage({ auctionId }: { auctionId: string }) {
+function CardImage({
+  auctionId,
+  onImageClick,
+}: {
+  auctionId: string;
+  onImageClick?: (index: number) => void;
+}) {
   const { data: imageList } = useAuctionImage(auctionId);
   return imageList !== null && imageList.length > 0 ? (
     <div
@@ -23,18 +35,21 @@ function CardImage({ auctionId }: { auctionId: string }) {
       }}
       className="relative"
     >
-      <div className="absolute left-2 top-2 rounded-full border-2 bg-orange-600 px-2 py-1 pr-4 text-white">
+      <div className="absolute px-2 py-1 pr-4 text-white bg-orange-600 border-2 rounded-full left-2 top-2">
         ㆍ경매예정
       </div>
-      {imageList.map((image) => {
+      {imageList.map((image, index) => {
         const imageUrl = `data:image/jpeg;base64,${image.picFile}`;
 
         return (
           <div
+            key={index}
+            onClick={() => onImageClick?.(index)}
             style={{
               // scroll-snap
               scrollSnapAlign: 'center',
               flex: '0 0 auto',
+              cursor: onImageClick ? 'pointer' : 'default',
             }}
           >
             <img
