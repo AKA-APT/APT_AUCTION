@@ -9,7 +9,7 @@ export default function TopNavigator({
   children: React.ReactNode;
 }) {
   const { data: user } = useUser();
-  const { login, logout } = useKakaoLogin();
+  const { login } = useKakaoLogin();
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -25,14 +25,8 @@ export default function TopNavigator({
             <div className="flex items-center gap-4">
               <Link to="/my-page" className="flex items-center gap-2">
                 <User className="w-5 h-5" />
-                <span>{user.nickname}</span>
+                <span className="font-bold pr-2">{user.nickname}</span>
               </Link>
-              <button
-                onClick={logout}
-                className="px-4 py-2 text-sm text-black bg-gray-200 rounded-lg"
-              >
-                로그아웃
-              </button>
             </div>
           ) : (
             <button
