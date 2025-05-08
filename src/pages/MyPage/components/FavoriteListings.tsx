@@ -1,6 +1,5 @@
 import { AuctionCardImage } from '@/components/AuctionCardImage';
-import { useAuctionImage } from '@/hooks/queries/useAuctionImage';
-import { SimpleAuction } from '@/models/auction';
+import { LikeAuction } from '@/models/auction';
 import { getLikeLists } from '@/remotes/my-page';
 import { commaizeNumber } from '@/utils/number';
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -30,7 +29,7 @@ export function FavoriteListings() {
   );
 }
 
-export function Auction({ auction }: { auction: SimpleAuction }) {
+export function Auction({ auction }: { auction: LikeAuction }) {
   return (
     <div className="overflow-hidden rounded-lg border shadow-lg">
       <div className="p-4">

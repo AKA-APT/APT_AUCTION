@@ -29,7 +29,7 @@ export interface SimpleAuction {
 /**
  * 사건 기본 정보
  */
-interface CaseBaseInfo {
+export interface CaseBaseInfo {
   /** 법원 코드 */
   courtCode: string;
   /** 법원명 */
@@ -177,7 +177,7 @@ interface AuctionSchedule {
 /**
  * 경매 대상 물건
  */
-interface AuctionObject {
+export interface AuctionObject {
   /** 법원 코드 */
   courtCode: string;
   /** 사건 번호 */
@@ -234,6 +234,12 @@ export type DetailAuction = {
   /** 평가 리스트 */
   evaluationList: Evaluation[];
 };
+
+export interface LikeAuction {
+  id: string;
+  caseBaseInfo: CaseBaseInfo;
+  auctionObject: AuctionObject;
+}
 
 export interface AuctionImage {
   picFileUrl: string;
