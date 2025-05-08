@@ -1,8 +1,15 @@
 import { getAuctionImage } from '@/remotes/auction';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+
+export const useSuspenseAuctionImage = (id: string) => {
+  return useSuspenseQuery({
+    queryKey: ['getAuctionImage', id],
+    queryFn: () => getAuctionImage(id),
+  });
+};
 
 export const useAuctionImage = (id: string) => {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: ['getAuctionImage', id],
     queryFn: () => getAuctionImage(id),
   });

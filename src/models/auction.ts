@@ -159,7 +159,7 @@ interface PhotoInfo {
 /**
  * 경매 일정
  */
-interface AuctionSchedule {
+export interface AuctionSchedule {
   /** 경매 날짜 */
   auctionDate: string;
   /** 경매 시간 */
@@ -169,9 +169,13 @@ interface AuctionSchedule {
   /** 경매 결과 코드 */
   auctionResultCode: string | null;
   /** 총 경매 가격 */
-  totalAuctionPrice: number;
+  totalAuctionPrice: number | null;
   /** 최종 경매 가격 */
   finalAuctionPrice: number | null;
+  /** 경매 종류 */
+  auctionKind: string;
+  /** 경매 결과 */
+  auctionResult: string;
 }
 
 /**

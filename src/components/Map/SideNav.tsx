@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom';
 import { useKakaoLogin } from '@/hooks/Auth/useKakaoLogin';
 import { useUser } from '@/hooks/Auth/useUser';
 import { usePrediction } from '@/hooks/queries/usePrediction';
+import AuctionScheduleTable from '@/components/AuctionScheduleTable';
 
 export function SideNav() {
   const { selectedAuction, isNavOpen } = useAuctionStore();
@@ -29,9 +30,18 @@ export function SideNav() {
   if (!isNavOpen || selectedAuction == null) return null;
 
   return (
-    <Suspense>
-      <AuctionDetail auctionId={selectedAuction.id} />
-    </Suspense>
+    <div
+      className="fixed left-0 top-[65px] z-20 h-[calc(100vh-65px)] w-[max(35%,20rem)] rounded-r-lg bg-gray-50 p-2 shadow-lg"
+      style={{
+        overflowY: 'auto',
+        msOverflowStyle: 'none',
+        scrollbarWidth: 'none',
+      }}
+    >
+      <Suspense>
+        <AuctionDetail auctionId={selectedAuction.id} />
+      </Suspense>
+    </div>
   );
 }
 
@@ -85,14 +95,7 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
   };
 
   return (
-    <div
-      className="fixed left-0 top-[65px] z-20 h-[calc(100vh-65px)] w-[max(35%,20rem)] rounded-r-lg bg-gray-50 p-2 shadow-lg"
-      style={{
-        overflowY: 'auto',
-        msOverflowStyle: 'none',
-        scrollbarWidth: 'none',
-      }}
-    >
+    <>
       <div className="flex items-center justify-between px-4 bg-white border-b h-14 rounded-t-md">
         <div className="text-xl font-bold text-blue-600 bold">매물 정보</div>
         <div className="flex items-center">
@@ -188,14 +191,7 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
               <LuCalendarDays className="mr-2 size-5" />
               경매일정
             </div>
-            <ul className="pl-5 space-y-1 text-sm text-gray-700 list-disc">
-              {auctionSchedules.map((schedule) => (
-                <li key={schedule.auctionDate}>
-                  {schedule.auctionDate} - 최저입찰가:{' '}
-                  {commaizeNumber(schedule.totalAuctionPrice)}원
-                </li>
-              ))}
-            </ul>
+            <AuctionScheduleTable auctionSchedules={auctionSchedules} />
           </div>
         )}
         <div className="p-4 bg-white border rounded-md shadow-sm">
@@ -216,7 +212,9 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
           </ul>
         </div>
         <div className="sticky bottom-0 pt-2 -m-2 rounded-b-lg bg-gray-50">
-          <MockAuctionButton auctionId={auctionId} />
+          <Suspense>
+            <MockAuctionButton auctionId={auctionId} />
+          </Suspense>
         </div>
       </div>
       {isModalOpen && imageList && imageList.length > 0 && (
@@ -284,7 +282,7 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

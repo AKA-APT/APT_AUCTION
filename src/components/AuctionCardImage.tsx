@@ -1,4 +1,7 @@
-import { useAuctionImage } from '@/hooks/queries/useAuctionImage';
+import {
+  useAuctionImage,
+  useSuspenseAuctionImage,
+} from '@/hooks/queries/useAuctionImage';
 import { Suspense } from 'react';
 
 export function AuctionCardImage({
@@ -9,7 +12,15 @@ export function AuctionCardImage({
   onImageClick?: (index: number) => void;
 }) {
   return (
-    <Suspense fallback={<div style={{ height: '200px' }}></div>}>
+    <Suspense
+      fallback={
+        <div style={{ height: '200px', display: 'flex', gap: '8px' }}>
+          <div className="flex items-center justify-center bg-gray-200 w-64 h-full" />
+          <div className="flex items-center justify-center bg-gray-200 w-64 h-full" />
+          <div className="flex items-center justify-center bg-gray-200 w-64 h-full" />
+        </div>
+      }
+    >
       <CardImage auctionId={auctionId} onImageClick={onImageClick} />
     </Suspense>
   );
@@ -22,7 +33,7 @@ function CardImage({
   auctionId: string;
   onImageClick?: (index: number) => void;
 }) {
-  const { data: imageList } = useAuctionImage(auctionId);
+  const { data: imageList } = useSuspenseAuctionImage(auctionId);
   return imageList !== null && imageList.length > 0 ? (
     <div
       style={{
