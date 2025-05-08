@@ -34,7 +34,7 @@ export const useSetMarker = () => {
     const htmlContent = `
       <div class="relative inline-block rounded-lg bg-white px-4 py-2 shadow-md border border-blue-200 text-center">
         <div class="flex items-center justify-center gap-1.5">
-          <div class="text-xs font-semibold text-blue-600">${propertyUsage}</div>
+          <div class="text-xs font-semibold text-blue-600 break-keep">${propertyUsage}</div>
           <span
             class="whitespace-nowrap rounded-full bg-blue-500 px-2 py-0.5 text-xs font-semibold text-white shadow-sm border border-white"
             style="letter-spacing: -0.5px;"
@@ -51,9 +51,9 @@ export const useSetMarker = () => {
                     border-t-[10px] border-t-blue-200">
         </div>
         <div class="absolute bottom-[-8px] left-1/2 transform -translate-x-1/2 w-0 h-0
-                    border-l-[8px] border-l-transparent
-                    border-r-[8px] border-r-transparent
-                    border-t-[8px] border-t-white">
+                    border-l-[10px] border-l-transparent
+                    border-r-[10px] border-r-transparent
+                    border-t-[10px] border-t-white">
         </div>
       </div>
     `;

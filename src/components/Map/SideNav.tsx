@@ -38,7 +38,31 @@ export function SideNav() {
         scrollbarWidth: 'none',
       }}
     >
-      <Suspense>
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-between px-4 bg-white border-b h-14 rounded-t-md">
+            <div className="text-xl font-bold text-blue-600 bold">
+              매물 정보
+            </div>
+            <div className="flex items-center">
+              <button
+                className="flex items-center justify-center mr-2 rounded-none size-4 hover:opacity-75"
+                style={{ background: 'none', outline: 'none', border: 'none' }}
+                onClick={() => {}}
+              >
+                {selectedAuction?.isInterested ? '❤️' : '🤍'}
+              </button>
+              <button
+                className="flex items-center justify-center text-gray-700 bg-gray-200 rounded-md size-8 hover:bg-gray-300"
+                style={{ boxSizing: 'border-box' }}
+                title="닫기"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        }
+      >
         <AuctionDetail auctionId={selectedAuction.id} />
       </Suspense>
     </div>
