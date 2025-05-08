@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
-import aptLogo from '@/assets/apt.png';
 import { useKakaoLogin } from '@/hooks/Auth/useKakaoLogin';
 import { useUser } from '@/hooks/Auth/useUser';
-import { User } from 'lucide-react';
+import { User, HomeIcon } from 'lucide-react';
 
 export default function TopNavigator({
   children,
@@ -16,9 +15,12 @@ export default function TopNavigator({
     <div className="flex flex-col min-h-screen">
       <header className="bg-white border-b">
         <div className="flex items-center justify-between h-16 px-4">
-          <Link to="/">
-            <img src={aptLogo} alt="APT 로고" className="w-auto h-8" />
-          </Link>
+          <div className="flex pl-4 gap-2 items-center">
+            <HomeIcon />
+            <Link to="/" className="text-xl font-bold text-gray-800">
+              APT Auction
+            </Link>
+          </div>
           {user ? (
             <div className="flex items-center gap-4">
               <Link to="/my-page" className="flex items-center gap-2">
