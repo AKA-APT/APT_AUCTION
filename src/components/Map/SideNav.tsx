@@ -23,6 +23,7 @@ import { useKakaoLogin } from '@/hooks/Auth/useKakaoLogin';
 import { useUser } from '@/hooks/Auth/useUser';
 import { usePrediction } from '@/hooks/queries/usePrediction';
 import AuctionScheduleTable from '@/components/AuctionScheduleTable';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 export function SideNav() {
   const { selectedAuction, isNavOpen } = useAuctionStore();
@@ -315,7 +316,6 @@ function MockAuctionButton({ auctionId }: { auctionId: string }) {
   const { data: user } = useUser();
   const { login } = useKakaoLogin();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data: prediction } = usePrediction(auctionId);
 
   if (!auction) return null;
 
@@ -345,15 +345,20 @@ function MockAuctionButton({ auctionId }: { auctionId: string }) {
         <div className="p-2 bg-white rounded-r">
           예상 낙찰가:
           <br />{' '}
-          <Suspense
+          <ErrorBoundary
+            key={auctionId}
             fallback={
-              <span className="font-semibold text-blue-600">예측 불가능</span>
+              <span className="font-semibold text-red-600">예측 실패</span>
             }
           >
-            <span className="font-semibold text-blue-600">
-              {commaizeNumber(prediction.predicted_price * 10 + 40000000)}원
-            </span>
-          </Suspense>
+            <Suspense
+              fallback={
+                <span className="font-semibold text-blue-600">예측 중...</span>
+              }
+            >
+              <PredictionPriceDisplay auctionId={auctionId} />
+            </Suspense>
+          </ErrorBoundary>
         </div>
       </div>
       <button
@@ -550,3 +555,25 @@ function MockAuctionModal({
     </div>
   );
 }
+
+const PredictionPriceDisplay = ({
+  auctionId,
+}: {
+  auctionId: string | undefined;
+}) => {
+  if (!auctionId) {
+    return <span className="font-semibold text-gray-500">경매 선택 필요</span>;
+  }
+  const { data: prediction } = usePrediction(auctionId);
+
+  if (prediction && typeof prediction.predicted_price !== 'undefined') {
+    return (
+      <span className="font-semibold text-blue-600">
+        {commaizeNumber(prediction.predicted_price)}원
+      </span>
+    );
+  }
+  return (
+    <span className="font-semibold text-orange-500">데이터 확인 중...</span>
+  );
+};

@@ -1,3 +1,4 @@
 export function commaizeNumber(num: number) {
-  return num.toLocaleString();
+  const integerPart = Math.floor(num);
+  return integerPart.toLocaleString();
 }
