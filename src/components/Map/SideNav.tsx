@@ -356,7 +356,10 @@ function MockAuctionButton({ auctionId }: { auctionId: string }) {
                 <span className="font-semibold text-blue-600">예측 중...</span>
               }
             >
-              <PredictionPriceDisplay auctionId={auctionId} />
+              <PredictionPriceDisplay
+                auctionId={auctionId}
+                minBidPrice={minBidPrice}
+              />
             </Suspense>
           </ErrorBoundary>
         </div>
@@ -558,8 +561,10 @@ function MockAuctionModal({
 
 const PredictionPriceDisplay = ({
   auctionId,
+  minBidPrice,
 }: {
   auctionId: string | undefined;
+  minBidPrice: number;
 }) => {
   if (!auctionId) {
     return <span className="font-semibold text-gray-500">경매 선택 필요</span>;
@@ -567,9 +572,15 @@ const PredictionPriceDisplay = ({
   const { data: prediction } = usePrediction(auctionId);
 
   if (prediction && typeof prediction.predicted_price !== 'undefined') {
+    const isBelowMin = prediction.predicted_price < minBidPrice;
     return (
       <span className="font-semibold text-blue-600">
         {commaizeNumber(prediction.predicted_price)}원
+        {isBelowMin && (
+          <span className="ml-2 text-xs text-red-500 font-normal bg-red-100 rounded px-2 py-0.5">
+            유찰 예상
+          </span>
+        )}
       </span>
     );
   }
