@@ -25,6 +25,8 @@ export function useInitializeMap() {
       center: new naver.maps.LatLng(37.496486063, 127.028361548),
     });
 
+    (window as any).mapInstance = newMap;
+
     return newMap;
   };
 

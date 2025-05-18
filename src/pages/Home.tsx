@@ -4,6 +4,10 @@ import { useSetMarker } from '@/hooks/Map/useSetMarker';
 import { useAuctions } from '@/hooks/queries/useAuctions';
 import { Suspense, useEffect, useState } from 'react';
 import { FilterBar } from '@/components/Map/FilterBar';
+import { useAddress } from '@/hooks/queries/useAddress';
+import { useMyPosition } from '@/hooks/queries/useMyPosition';
+import { useQueryClient } from '@tanstack/react-query';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 function MapRenderer() {
   useInitializeMap();
@@ -52,6 +56,97 @@ function MerkerRenderer({ failedBidCount }: { failedBidCount: number }) {
   return null;
 }
 
+function MapFooter() {
+  const [center, setCenter] = useState<{ lat: number; lng: number }>({
+    lat: 37.496486063,
+    lng: 127.028361548,
+  });
+  const [map, setMap] = useState<any>(null);
+  const { data: myPos } = useMyPosition();
+
+  useEffect(() => {
+    let interval: any;
+    function trySetMap() {
+      const mapEl =
+        (window as any).naver?.maps?.Map && (window as any).mapInstance;
+      if (mapEl) {
+        setMap(mapEl);
+        setCenter({
+          lat: mapEl.getCenter().lat(),
+          lng: mapEl.getCenter().lng(),
+        });
+        const updateCenter = () => {
+          setCenter({
+            lat: mapEl.getCenter().lat(),
+            lng: mapEl.getCenter().lng(),
+          });
+        };
+        mapEl.addListener('center_changed', updateCenter);
+        clearInterval(interval);
+        return () => mapEl.removeListener('center_changed', updateCenter);
+      }
+    }
+    interval = setInterval(trySetMap, 100);
+    return () => clearInterval(interval);
+  }, []);
+
+  const goToMyLocation = () => {
+    if (map && myPos) {
+      map.setCenter(new window.naver.maps.LatLng(myPos.lat, myPos.lng));
+    }
+  };
+
+  return (
+    <div className="fixed bottom-3 left-1/2 z-50 -translate-x-1/2 w-[95vw] max-w-md rounded-xl shadow-lg bg-white/90 border border-gray-200 px-3 py-1 text-xs flex flex-col items-center">
+      <div className="flex items-center justify-between w-full gap-2">
+        <Suspense
+          fallback={<span className="text-gray-400">중심: 변환 중...</span>}
+        >
+          <CenterAddress center={center} />
+        </Suspense>
+        <ErrorBoundary
+          fallback={<span className="text-red-500">내 위치 불러오기 실패</span>}
+        >
+          <Suspense
+            fallback={
+              <span className="text-gray-400 min-w-[160px]">
+                내 위치 변환 중...
+              </span>
+            }
+          >
+            <MyPositionAddress onClick={goToMyLocation} />
+          </Suspense>
+        </ErrorBoundary>
+      </div>
+    </div>
+  );
+}
+
+function CenterAddress({ center }: { center: { lat: number; lng: number } }) {
+  const { data: centerAddress } = useAddress(center.lat, center.lng);
+  return (
+    <span className="flex items-center gap-1 text-gray-600">
+      {centerAddress ? centerAddress.fullAddress : ''}
+    </span>
+  );
+}
+
+function MyPositionAddress({ onClick }: { onClick?: () => void }) {
+  const { data: myPos } = useMyPosition();
+  const { data: myAddress } = useAddress(myPos.lat, myPos.lng);
+  return (
+    <span
+      className="flex items-center gap-1 text-gray-600 min-w-[160px] px-2 py-1 rounded bg-blue-50 hover:bg-blue-100 cursor-pointer transition"
+      onClick={onClick}
+      tabIndex={0}
+      role="button"
+      aria-pressed="false"
+    >
+      {myAddress ? myAddress.fullAddress : '내 위치 변환 중...'}
+    </span>
+  );
+}
+
 export default function Home() {
   const [failedBidCount, setFailedBidCount] = useState(0);
   return (
@@ -66,6 +161,7 @@ export default function Home() {
         <MapRenderer />
         <MerkerRenderer failedBidCount={failedBidCount} />
       </Suspense>
+      <MapFooter />
     </>
   );
 }
