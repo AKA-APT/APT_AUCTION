@@ -1,14 +1,7 @@
 import { AuctionCardImage } from '@/components/AuctionCardImage';
 import { DetailAuction } from '@/models/auction';
 import { commaizeNumber } from '@/utils/number';
-import {
-  Building,
-  Home,
-  Store,
-  TrendingUp,
-  AlertTriangle,
-  Calendar,
-} from 'lucide-react';
+import { Building, AlertTriangle, Calendar } from 'lucide-react';
 
 export function AuctionCard({ auction }: { auction: DetailAuction }) {
   const getAiScoreColor = (score: number) => {
@@ -22,13 +15,10 @@ export function AuctionCard({ auction }: { auction: DetailAuction }) {
     <div className="">
       <AuctionCardImage auctionId={auction.id} />
 
-      <div className="mb-2 mt-2 flex items-center justify-between">
+      <div className="flex items-center justify-between mt-2 mb-2">
         <div className="flex items-center">
-          <Building className="h-5 w-5" />
+          <Building className="w-5 h-5" />
           <span className="ml-1 text-sm text-gray-500">아파트</span>
-        </div>
-        <div className={`font-bold ${getAiScoreColor(80)}`}>
-          AI 점수: {80}점
         </div>
       </div>
 
@@ -41,14 +31,14 @@ export function AuctionCard({ auction }: { auction: DetailAuction }) {
 
       <div className="space-y-2">
         <div className="flex items-center text-sm">
-          <Calendar className="mr-2 h-4 w-4 text-gray-500" />
+          <Calendar className="w-4 h-4 mr-2 text-gray-500" />
           <span className="text-gray-500">경매일:</span>
           <span className="ml-auto">
             {auction.disposalGoodsExecutionInfo.auctionDate}
           </span>
         </div>
         <div className="flex items-center text-sm">
-          <AlertTriangle className="mr-2 h-4 w-4 text-gray-500" />
+          <AlertTriangle className="w-4 h-4 mr-2 text-gray-500" />
           <span className="text-gray-500">감정가:</span>
           <span className="ml-auto">
             {commaizeNumber(auction.disposalGoodsExecutionInfo.appraisedValue)}
