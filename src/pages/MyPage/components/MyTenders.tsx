@@ -27,7 +27,11 @@ export function MyTenders() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <Suspense>
             {realTenders.map((tender) => (
-              <Tender key={tender.auctionId} tender={tender} isMock={false} />
+              <Tender
+                key={`${tender.auctionId}_${tender.tenderCost}`}
+                tender={tender}
+                isMock={false}
+              />
             ))}
           </Suspense>
         </div>
