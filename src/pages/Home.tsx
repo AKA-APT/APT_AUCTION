@@ -94,7 +94,7 @@ function MapFooter() {
     <div className="fixed bottom-3 left-1/2 z-50 -translate-x-1/2 w-[95vw] max-w-md rounded-xl shadow-lg bg-white/90 border border-gray-200 px-3 py-1 text-xs flex flex-col items-center">
       <div className="flex items-center justify-between w-full gap-2">
         <Suspense
-          fallback={<span className="text-gray-400">중심: 변환 중...</span>}
+          fallback={<span className="text-gray-400">중심 변환 중...</span>}
         >
           <CenterAddress center={center} />
         </Suspense>
@@ -119,9 +119,12 @@ function MapFooter() {
 function CenterAddress({ center }: { center: { lat: number; lng: number } }) {
   const { data: centerAddress } = useAddress(center.lat, center.lng);
   return (
-    <span className="flex items-center gap-1 text-gray-600">
-      {centerAddress ? centerAddress.fullAddress : ''}
-    </span>
+    <div className="flex items-center gap-1">
+      <span>중심 위치 :</span>
+      <span className="flex items-center gap-1 text-gray-600">
+        {centerAddress ? centerAddress.fullAddress : ''}
+      </span>
+    </div>
   );
 }
 
@@ -129,15 +132,18 @@ function MyPositionAddress({ onClick }: { onClick?: () => void }) {
   const { data: myPos } = useMyPosition();
   const { data: myAddress } = useAddress(myPos.lat, myPos.lng);
   return (
-    <span
-      className="flex items-center gap-1 text-gray-600 min-w-[160px] px-2 py-1 rounded bg-blue-100 hover:bg-blue-200 cursor-pointer transition"
-      onClick={onClick}
-      tabIndex={0}
-      role="button"
-      aria-pressed="false"
-    >
-      {myAddress ? myAddress.fullAddress : '내 위치 변환 중...'}
-    </span>
+    <div className="flex items-center gap-1">
+      <span>내 위치 :</span>
+      <span
+        className="flex items-center gap-1 text-gray-600 min-w-[160px] px-2 py-1 rounded bg-blue-100 hover:bg-blue-200 cursor-pointer transition"
+        onClick={onClick}
+        tabIndex={0}
+        role="button"
+        aria-pressed="false"
+      >
+        {myAddress ? myAddress.fullAddress : '내 위치 변환 중...'}
+      </span>
+    </div>
   );
 }
 
