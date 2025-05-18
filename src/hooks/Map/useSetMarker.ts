@@ -1,5 +1,4 @@
 import { useAuctionStore } from '@/stores/useAuctionStore';
-import { useInitializeMap } from './useInitializeMap';
 import { SimpleAuction, GeoAuctionGroup } from '@/models/auction';
 
 const MarkerCache = new Map<string, naver.maps.Marker>();
@@ -15,8 +14,7 @@ const formatAmount = (amount: number) => {
   return amount.toLocaleString();
 };
 
-export const useSetMarker = () => {
-  const { data: map } = useInitializeMap();
+export const useSetMarker = (map: naver.maps.Map) => {
   const { setSelectAuction } = useAuctionStore();
 
   const setMarker = async (auction: SimpleAuction) => {

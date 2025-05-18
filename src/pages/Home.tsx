@@ -6,13 +6,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { FilterBar } from '@/components/Map/FilterBar';
 import { useAddress } from '@/hooks/queries/useAddress';
 import { useMyPosition } from '@/hooks/queries/useMyPosition';
-import { useQueryClient } from '@tanstack/react-query';
 import ErrorBoundary from '@/components/ErrorBoundary';
-
-function MapRenderer() {
-  useInitializeMap();
-  return null;
-}
 
 function MerkerRenderer({ failedBidCount }: { failedBidCount: number }) {
   const { data: map } = useInitializeMap();
@@ -33,7 +27,7 @@ function MerkerRenderer({ failedBidCount }: { failedBidCount: number }) {
     failedBidCount,
   });
 
-  const { setMarkers } = useSetMarker();
+  const { setMarkers } = useSetMarker(map);
 
   useEffect(() => {
     setMarkers(auctions);
@@ -136,7 +130,7 @@ function MyPositionAddress({ onClick }: { onClick?: () => void }) {
   const { data: myAddress } = useAddress(myPos.lat, myPos.lng);
   return (
     <span
-      className="flex items-center gap-1 text-gray-600 min-w-[160px] px-2 py-1 rounded bg-blue-50 hover:bg-blue-100 cursor-pointer transition"
+      className="flex items-center gap-1 text-gray-600 min-w-[160px] px-2 py-1 rounded bg-blue-100 hover:bg-blue-200 cursor-pointer transition"
       onClick={onClick}
       tabIndex={0}
       role="button"
@@ -158,7 +152,6 @@ export default function Home() {
       />
       <div id={'map'} style={{ height: 'calc(100vh - 66px)' }} />
       <Suspense>
-        <MapRenderer />
         <MerkerRenderer failedBidCount={failedBidCount} />
       </Suspense>
       <MapFooter />
