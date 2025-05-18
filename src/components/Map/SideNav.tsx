@@ -338,12 +338,12 @@ function MockAuctionButton({ auctionId }: { auctionId: string }) {
     <>
       <div className="grid grid-cols-2 gap-px px-4 py-2 text-sm text-center bg-gray-200">
         <div className="p-2 bg-white rounded-l">
-          최저 입찰가:
+          최저 입찰가
           <br />{' '}
           <span className="font-semibold">{commaizeNumber(minBidPrice)}원</span>
         </div>
         <div className="p-2 bg-white rounded-r">
-          예상 낙찰가:
+          예상 낙찰가
           <br />{' '}
           <ErrorBoundary
             key={auctionId}
