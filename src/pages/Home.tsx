@@ -117,7 +117,19 @@ function MapFooter() {
 }
 
 function CenterAddress({ center }: { center: { lat: number; lng: number } }) {
-  const { data: centerAddress } = useAddress(center.lat, center.lng);
+  const [debouncedCenter, setDebouncedCenter] = useState(center);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedCenter(center);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [center]);
+
+  const { data: centerAddress } = useAddress(
+    debouncedCenter.lat,
+    debouncedCenter.lng,
+  );
+
   return (
     <div className="flex items-center gap-1">
       <span>중심 위치 :</span>
