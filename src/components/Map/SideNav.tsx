@@ -572,7 +572,7 @@ const PredictionPriceDisplay = ({
     return <span className="font-semibold text-gray-500">경매 선택 필요</span>;
   }
   const { data: prediction } = usePrediction(auctionId);
-  console.log('Prediction:', prediction, minBidPrice);
+
   if (prediction && typeof prediction.predicted_price !== 'undefined') {
     const isBelowMin = prediction.predicted_price < minBidPrice;
     return (

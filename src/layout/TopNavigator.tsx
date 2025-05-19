@@ -13,7 +13,10 @@ export default function TopNavigator({
 
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="bg-white border-b">
+      <header
+        className="bg-white border-b"
+        style={{ zIndex: 1000, position: 'sticky', top: 0 }}
+      >
         <div className="flex items-center justify-between h-16 px-4">
           <div className="flex pl-4 gap-2 items-center">
             <HomeIcon />
