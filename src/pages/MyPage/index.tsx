@@ -11,7 +11,9 @@ export default function MyPage() {
   const { logout } = useKakaoLogin();
   return (
     <div className="container mx-auto p-4">
-      <Suspense>
+      <Suspense
+        fallback={<div style={{ height: '100vh', width: '100vw' }}></div>}
+      >
         <UserProfile />
         <Suspense>
           <InvestmentPreferences />

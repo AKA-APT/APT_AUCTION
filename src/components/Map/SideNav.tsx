@@ -336,23 +336,15 @@ function MockAuctionButton({ auctionId }: { auctionId: string }) {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-px px-4 py-2 text-sm text-center bg-gray-200">
-        <div className="p-2 bg-white rounded-l">
-          최저 입찰가
+      <div className="grid grid-cols-1 gap-px px-4 py-2 text-lg text-start bg-gray-200">
+        <div className="p-2 pl-4 bg-white">
+          <span className="text-base font-semibold">최저 입찰가</span>
           <br />
-          <div
-            className="border-t-2 border-gray-300 mx-2 pb-1 my-1"
-            style={{ height: 1 }}
-          />
-          <span className="font-semibold">{commaizeNumber(minBidPrice)}원</span>
+          <span className="font-bold">{commaizeNumber(minBidPrice)}원</span>
         </div>
-        <div className="p-2 bg-white rounded-r">
-          예상 낙찰가
+        <div className="p-2 pl-4 bg-white">
+          <span className="text-base font-semibold">예상 낙찰가</span>
           <br />
-          <div
-            className="border-t-2 border-gray-300 mx-2 pb-1 my-1"
-            style={{ height: 1 }}
-          />
           <ErrorBoundary
             key={auctionId}
             fallback={
@@ -361,7 +353,9 @@ function MockAuctionButton({ auctionId }: { auctionId: string }) {
           >
             <Suspense
               fallback={
-                <span className="font-semibold text-blue-600">예측 중...</span>
+                <div className="flex items-center justify-center">
+                  <img src="src\assets\searching.gif" style={{ height: 20 }} />
+                </div>
               }
             >
               <PredictionPriceDisplay
@@ -578,12 +572,15 @@ const PredictionPriceDisplay = ({
     return <span className="font-semibold text-gray-500">경매 선택 필요</span>;
   }
   const { data: prediction } = usePrediction(auctionId);
-
+  console.log('Prediction:', prediction, minBidPrice);
   if (prediction && typeof prediction.predicted_price !== 'undefined') {
     const isBelowMin = prediction.predicted_price < minBidPrice;
     return (
-      <span className="font-semibold text-blue-600">
-        {commaizeNumber(prediction.predicted_price)}원
+      <span
+        className={`font-bold ${!isBelowMin ? 'text-blue-600' : 'text-orange-500'}`}
+      >
+        {commaizeNumber(prediction.predicted_price)}원 (
+        {((prediction.predicted_price / minBidPrice) * 100).toFixed(0)}%)
         {isBelowMin && (
           <span className="ml-2 text-xs text-red-500 font-bold bg-red-100 rounded px-2 py-0.5">
             유찰 예상
