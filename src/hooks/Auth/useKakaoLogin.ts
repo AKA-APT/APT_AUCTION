@@ -1,5 +1,6 @@
 import { httpClient } from '@/utils/http-client';
 import { useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${
   import.meta.env.VITE_REST_API_KEY
@@ -7,7 +8,7 @@ const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${
 
 export const useKakaoLogin = () => {
   const queryClient = useQueryClient();
-
+  const navigate = useNavigate();
   const login = () => {
     window.location.href = kakaoAuthUrl;
   };
@@ -17,8 +18,10 @@ export const useKakaoLogin = () => {
       const response = await httpClient.post('/api/oauth/logout', {});
 
       if (response.ok) {
-        queryClient.invalidateQueries({ queryKey: ['user'] });
+        await queryClient.invalidateQueries({ queryKey: ['user'] });
       }
+
+      window.location.href = '/';
     } catch (error) {
       console.error('Logout error:', error);
       alert('로그아웃 중 오류가 발생했습니다.');
