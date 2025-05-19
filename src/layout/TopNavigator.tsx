@@ -17,9 +17,9 @@ export default function TopNavigator({
         <div className="flex items-center justify-between h-16 px-4">
           <div className="flex pl-4 gap-2 items-center">
             <HomeIcon />
-            <Link to="/" className="text-xl font-bold text-gray-800">
+            <a href="/" className="text-xl font-bold text-gray-800">
               APT Auction
-            </Link>
+            </a>
           </div>
           {user ? (
             <div className="flex items-center gap-4">
