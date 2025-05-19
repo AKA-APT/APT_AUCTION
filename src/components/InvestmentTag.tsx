@@ -27,7 +27,7 @@ const tagColors = {
   자가우선: { bgColor: 'bg-indigo-600', borderColor: 'border-indigo-700' },
   임대사업: { bgColor: 'bg-teal-600', borderColor: 'border-teal-700' },
   정부지원형: { bgColor: 'bg-blue-500', borderColor: 'border-blue-600' },
-  고위험: { bgColor: 'bg-red-600', borderColor: 'border-red-700' },
+  변동성: { bgColor: 'bg-red-600', borderColor: 'border-red-700' },
   단기투자: { bgColor: 'bg-orange-600', borderColor: 'border-orange-700' },
   갭투자: { bgColor: 'bg-pink-600', borderColor: 'border-pink-700' },
   재개발: { bgColor: 'bg-yellow-700', borderColor: 'border-yellow-800' },
@@ -72,7 +72,7 @@ export const tagInfo = {
     name: '정부지원형',
     description: '공공 임대주택, 장기전세주택 등 정책적 혜택을 활용',
   },
-  9: { name: '고위험', description: '변동성이 높은 지역과 부동산에 투자' },
+  9: { name: '변동성', description: '변동성이 높은 지역과 부동산에 투자' },
   10: {
     name: '단기투자',
     description: '단기간 내 차익 실현을 목표로 하는 투자',
