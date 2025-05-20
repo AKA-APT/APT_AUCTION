@@ -27,17 +27,17 @@ const getZoomLevel = (zoom: number) => {
 const getIconSrc = (categoryGroupCode: string) => {
   switch (categoryGroupCode) {
     case 'MT1':
-      return 'src/assets/MT1.png';
+      return '/assets/place/MT1.png';
     case 'CS2':
-      return 'src/assets/CS2.png';
+      return '/assets/place/CS2.png';
     case 'SC4':
-      return 'src/assets/SC4.png';
+      return '/assets/place/SC4.png';
     case 'AC5':
-      return 'src/assets/AC5.png';
+      return '/assets/place/AC5.png';
     case 'PM9':
-      return 'src/assets/PM9.png';
+      return '/assets/place/PM9.png';
     default:
-      return 'src/assets/MT1.png';
+      return '/assets/place/MT1.png';
   }
 };
 

@@ -354,7 +354,7 @@ function MockAuctionButton({ auctionId }: { auctionId: string }) {
             <Suspense
               fallback={
                 <div className="flex items-center justify-center">
-                  <img src="src\assets\searching.gif" style={{ height: 20 }} />
+                  <img src="/assets/searching.gif" className="absolute h-10" />
                 </div>
               }
             >
