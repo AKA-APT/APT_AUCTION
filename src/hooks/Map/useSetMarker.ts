@@ -2,7 +2,6 @@ import { useAuctionStore } from '@/stores/useAuctionStore';
 import { SimpleAuction, GeoAuctionGroup } from '@/models/auction';
 import { useEffect } from 'react';
 import { getPlacesByCoords } from '@/remotes/address';
-import { Store } from 'lucide-react';
 
 const MarkerCache = new Map<string, naver.maps.Marker>();
 
@@ -68,17 +67,31 @@ export const useSetMarker = (map: naver.maps.Map) => {
     const propertyUsage = auction.auctionStatus.propertyUsage;
     const minBidPrice = auction.auctionStatus.minimumPrice;
     const formattedAmount = formatAmount(minBidPrice);
+    const investmentTagsCount = auction.investmentTags.length;
 
     const htmlContent = `
       <div class="relative inline-block rounded-lg bg-white px-4 py-2 shadow-md border border-blue-200 text-center z-30 animate-[bounce_1s_ease-in-out_forwards]">
+        ${investmentTagsCount > 0 ? `<div class="absolute top-[-6px] left-[5px] bg-sky-600 text-xs text-white px-2 rounded-full">+${investmentTagsCount}</div>` : ''}
         <div class="flex items-center justify-center gap-1.5">
           <div class="text-xs font-semibold text-blue-600 break-keep">${propertyUsage}</div>
-          <span
-            class="whitespace-nowrap rounded-full bg-blue-500 px-2 py-0.5 text-xs font-semibold text-white shadow-sm border border-white"
-            style="letter-spacing: -0.5px;"
-          >
-            유찰${ruptureCount}회
-          </span>
+          ${
+            ruptureCount === 0
+              ? `
+              <span
+                class="whitespace-nowrap rounded-full bg-orange-500 px-2 py-0.5 text-xs font-semibold text-white shadow-sm border border-white"
+                style="letter-spacing: -0.5px;"
+              >
+                신건
+              </span>
+            `
+              : `
+            <span
+              class="whitespace-nowrap rounded-full bg-blue-500 px-2 py-0.5 text-xs font-semibold text-white shadow-sm border border-white"
+              style="letter-spacing: -0.5px;"
+            >
+              유찰 ${ruptureCount}회
+            </span>`
+          }
         </div>
         <div class="mt-1">
           <span class="text-2xl font-bold text-gray-800">${formattedAmount}</span>
@@ -149,10 +162,12 @@ export const useSetMarker = (map: naver.maps.Map) => {
             map,
             icon: {
               content: `
-                <div class="relative inline-block rounded-lg bg-white px-2 py-1 shadow-md border border-blue-200 text-center z-20">
+                <div class="relative w-full inline-block rounded-lg bg-white px-2 py-1 shadow-md border border-blue-200 z-20">
                   <div class="text-xs font-normal text-blue-600 break-keep flex items-center justify-center gap-1.5">
                     <img src="${getIconSrc(place.categoryGroupCode)}" alt="${place.placeName}" class="w-4 h-4 object-cover" />
+                    <span>
                     ${place.categoryGroupName}
+                    </span>
                   </div>
                 </div>
               `,

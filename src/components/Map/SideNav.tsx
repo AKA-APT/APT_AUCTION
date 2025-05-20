@@ -32,7 +32,7 @@ export function SideNav() {
 
   return (
     <div
-      className="fixed left-0 top-[65px] z-20 h-[calc(100vh-65px)] w-[max(35%,20rem)] rounded-r-lg bg-gray-50 p-2 shadow-lg"
+      className="fixed left-0 top-[65px] z-20 h-[calc(100vh-65px)] w-[max(35%,20rem)] rounded-r-lg bg-gray-50 p-2 shadow-lg animate-slide-in-left"
       style={{
         overflowY: 'auto',
         msOverflowStyle: 'none',
@@ -118,10 +118,6 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
       setCurrentImageIndex(currentImageIndex - 1);
     }
   };
-
-  const minBidPrice =
-    auction.latestBiddingPrice ||
-    auction.disposalGoodsExecutionInfo.firstAuctionPrice;
 
   return (
     <>

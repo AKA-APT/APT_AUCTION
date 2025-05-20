@@ -1,8 +1,10 @@
 import { useAuctionInvestmentTags } from '@/hooks/queries/useAuctionInvestmentTags';
+import { useInvestmentTags } from '@/hooks/queries/useInvestmentTags';
 import { Tooltip } from 'react-tooltip';
 
 export function InvestmentTags({ auctionId }: { auctionId: string }) {
   const { data: investmentTags } = useAuctionInvestmentTags(auctionId);
+  const { data: myInvestmentTags } = useInvestmentTags();
 
   return (
     <div className="flex flex-wrap gap-2">
@@ -12,6 +14,7 @@ export function InvestmentTags({ auctionId }: { auctionId: string }) {
           id={tag.id}
           name={tag.name}
           description={tag.description}
+          hasPing={myInvestmentTags.some((myTag) => myTag.id === tag.id)}
         />
       ))}
     </div>
@@ -140,11 +143,13 @@ export function InvestmentTag({
   description,
   onClick,
   id,
+  hasPing,
 }: {
   id: number;
   name: string;
   description: string;
   onClick?: (id: number) => void;
+  hasPing: boolean;
 }) {
   const tagName = name as keyof typeof tagColors;
   return (
@@ -154,8 +159,11 @@ export function InvestmentTag({
         data-tooltip-id={name}
         data-tooltip-content={description}
         onClick={() => onClick?.(id)}
-        className={`${tagColors[tagName].bgColor} ${tagColors[tagName].borderColor} rounded-full px-2 py-1 text-xs text-white`}
+        className={`${tagColors[tagName].bgColor} ${tagColors[tagName].borderColor} rounded-full px-2 py-1 text-xs text-white relative`}
       >
+        {hasPing && (
+          <div className="absolute -top-0.5 -left-0.5 w-2 h-2 bg-red-500 rounded-full animate-[ping_2s_infinite]" />
+        )}
         {name}
       </div>
     </>
