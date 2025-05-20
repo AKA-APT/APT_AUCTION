@@ -17,7 +17,7 @@ const getZoomLevel = (zoom: number) => {
     return 30;
   }
   if (zoom === 16) {
-    return 20;
+    return 18;
   }
   if (zoom === 15) {
     return 10;
@@ -175,7 +175,9 @@ export const useSetMarker = (map: naver.maps.Map) => {
           ),
           map,
           icon: {
-            content: `
+            content:
+              window.mapInstance.zoom >= 17
+                ? `
              <div class="fixed top-0 left-0 w-screen h-screen z-10 pointer-events-none">
               <div
                 class="w-full h-full bg-gray-600 bg-opacity-20 flex items-center justify-center"
@@ -186,7 +188,8 @@ export const useSetMarker = (map: naver.maps.Map) => {
               >
               </div>
             </div>
-            `,
+            `
+                : '',
             anchor: new naver.maps.Point(66, 80),
           },
         });
