@@ -151,7 +151,7 @@ export const useSetMarker = (map: naver.maps.Map) => {
               content: `
                 <div class="relative inline-block rounded-lg bg-white px-2 py-1 shadow-md border border-blue-200 text-center z-20">
                   <div class="text-xs font-normal text-blue-600 break-keep flex items-center justify-center gap-1.5">
-                    <img src="${getIconSrc(place.categoryGroupCode)}" alt="${place.placeName}" class="w-4 h-4 object-cover rounded-lg" />
+                    <img src="${getIconSrc(place.categoryGroupCode)}" alt="${place.placeName}" class="w-4 h-4 object-cover" />
                     ${place.categoryGroupName}
                   </div>
                 </div>

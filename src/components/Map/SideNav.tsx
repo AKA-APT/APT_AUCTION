@@ -119,6 +119,10 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
     }
   };
 
+  const minBidPrice =
+    auction.latestBiddingPrice ||
+    auction.disposalGoodsExecutionInfo.firstAuctionPrice;
+
   return (
     <>
       <div className="flex items-center justify-between px-4 bg-white border-b h-14 rounded-t-md">
@@ -336,7 +340,7 @@ function MockAuctionButton({ auctionId }: { auctionId: string }) {
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-px px-4 py-2 text-lg text-start bg-gray-200">
+      <div className="grid grid-cols-1 gap-px px-4 py-2 text-lg bg-gray-200 text-start">
         <div className="p-2 pl-4 bg-white">
           <span className="text-base font-semibold">최저 입찰가</span>
           <br />
@@ -353,8 +357,11 @@ function MockAuctionButton({ auctionId }: { auctionId: string }) {
           >
             <Suspense
               fallback={
-                <div className="flex items-center justify-center">
-                  <img src="/assets/searching.gif" className="absolute h-10" />
+                <div className="flex items-center justify-center relative min-h-[28px]">
+                  <img
+                    src="/assets/searching.gif"
+                    className="absolute h-10 transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                  />
                 </div>
               }
             >
