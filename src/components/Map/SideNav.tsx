@@ -340,7 +340,7 @@ function MockAuctionButton({ auctionId }: { auctionId: string }) {
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-px px-4 py-2 text-lg bg-gray-200 text-start">
+      <div className="grid grid-cols-1 gap-px px-2 py-2 text-lg bg-gray-200 text-start rounded-sm">
         <div className="p-2 pl-4 bg-white">
           <span className="text-base font-semibold">최저 입찰가</span>
           <br />

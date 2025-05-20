@@ -70,7 +70,7 @@ export const useSetMarker = (map: naver.maps.Map) => {
     const formattedAmount = formatAmount(minBidPrice);
 
     const htmlContent = `
-      <div class="relative inline-block rounded-lg bg-white px-4 py-2 shadow-md border border-blue-200 text-center z-30">
+      <div class="relative inline-block rounded-lg bg-white px-4 py-2 shadow-md border border-blue-200 text-center z-30 animate-[bounce_1s_ease-in-out_forwards]">
         <div class="flex items-center justify-center gap-1.5">
           <div class="text-xs font-semibold text-blue-600 break-keep">${propertyUsage}</div>
           <span
