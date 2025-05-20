@@ -17,16 +17,13 @@ import { Suspense } from 'react';
 export function MyTenders() {
   const { data: tenders } = useMyTenders();
 
-  const realTenders = tenders?.filter((tender) => !tender.isMock) ?? [];
-  const mockTenders = tenders?.filter((tender) => tender.isMock) ?? [];
-
   return (
     <div className="my-8">
-      <h2 className="mb-4 text-2xl font-bold">내 입찰 현황</h2>
-      {realTenders.length > 0 ? (
+      <h2 className="mb-4 text-2xl font-bold">모의 입찰 현황</h2>
+      {tenders.length > 0 ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <Suspense>
-            {realTenders.map((tender) => (
+            {tenders.map((tender) => (
               <Tender
                 key={`${tender.auctionId}_${tender.tenderCost}`}
                 tender={tender}
@@ -36,23 +33,10 @@ export function MyTenders() {
           </Suspense>
         </div>
       ) : (
-        <p className="text-gray-500">진행 중인 실제 입찰 내역이 없습니다.</p>
+        <p className="text-gray-500">진행 중인 입찰 내역이 없습니다.</p>
       )}
 
       <Spacing size={32} />
-
-      <h2 className="mb-4 text-2xl font-bold">모의 낙찰 현황</h2>
-      {mockTenders.length > 0 ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <Suspense>
-            {mockTenders.map((tender) => (
-              <Tender key={tender.auctionId} tender={tender} isMock={true} />
-            ))}
-          </Suspense>
-        </div>
-      ) : (
-        <p className="text-gray-500">진행한 모의 낙찰 내역이 없습니다.</p>
-      )}
     </div>
   );
 }
