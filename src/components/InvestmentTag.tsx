@@ -143,13 +143,13 @@ export function InvestmentTag({
   description,
   onClick,
   id,
-  hasPing,
+  hasPing = false,
 }: {
   id: number;
   name: string;
   description: string;
   onClick?: (id: number) => void;
-  hasPing: boolean;
+  hasPing?: boolean;
 }) {
   const tagName = name as keyof typeof tagColors;
   return (
