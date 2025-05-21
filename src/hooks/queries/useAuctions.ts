@@ -10,7 +10,7 @@ export const useAuctions = (params: AuctionParams) => {
       params.lbLng,
       params.rtLat,
       params.rtLng,
-      params.failedBidCount,
+      params.isResult,
     ],
     queryFn: () => getAuctions(params),
   });

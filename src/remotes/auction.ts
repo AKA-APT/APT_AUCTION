@@ -8,8 +8,22 @@ import {
 } from '@/models/auction';
 import { httpClient } from '@/utils/http-client';
 
-export function getAuctions(params: AuctionParams) {
-  return httpClient.get<GeoAuctionGroup[]>('/api/v2/auctions', { params });
+export function getAuctions({
+  isResult,
+  lbLat,
+  lbLng,
+  rtLat,
+  rtLng,
+}: AuctionParams) {
+  return httpClient.get<GeoAuctionGroup[]>('/api/v2/auctions', {
+    params: {
+      lbLat,
+      lbLng,
+      rtLat,
+      rtLng,
+      isInProgress: !isResult,
+    },
+  });
 }
 
 export function getAuction(id: string) {

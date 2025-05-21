@@ -54,7 +54,7 @@ const formatAmount = (amount: number) => {
 export const useSetMarker = (map: naver.maps.Map) => {
   const { setSelectAuction, selectedAuction } = useAuctionStore();
 
-  const setMarker = async (auction: SimpleAuction) => {
+  const setMarker = async (auction: SimpleAuction, isResult: boolean) => {
     const cachedMarker = MarkerCache.get(auction.id);
     if (cachedMarker != null) {
       return cachedMarker;
@@ -75,8 +75,17 @@ export const useSetMarker = (map: naver.maps.Map) => {
         <div class="flex items-center justify-center gap-1.5">
           <div class="text-xs font-semibold text-blue-600 break-keep">${propertyUsage}</div>
           ${
-            ruptureCount === 0
+            isResult
               ? `
+              <span
+                class="whitespace-nowrap rounded-full bg-green-600 px-2 py-0.5 text-xs font-semibold text-white shadow-sm border border-white"
+                style="letter-spacing: -0.5px;"
+              >
+                매각 결과
+              </span>
+          `
+              : ruptureCount === 0
+                ? `
               <span
                 class="whitespace-nowrap rounded-full bg-orange-500 px-2 py-0.5 text-xs font-semibold text-white shadow-sm border border-white"
                 style="letter-spacing: -0.5px;"
@@ -84,7 +93,7 @@ export const useSetMarker = (map: naver.maps.Map) => {
                 신건
               </span>
             `
-              : `
+                : `
             <span
               class="whitespace-nowrap rounded-full bg-blue-500 px-2 py-0.5 text-xs font-semibold text-white shadow-sm border border-white"
               style="letter-spacing: -0.5px;"
@@ -128,7 +137,10 @@ export const useSetMarker = (map: naver.maps.Map) => {
     return marker;
   };
 
-  const setMarkers = async (auctionGroups: GeoAuctionGroup[]) => {
+  const setMarkers = async (
+    auctionGroups: GeoAuctionGroup[],
+    isResult: boolean,
+  ) => {
     // destroy all markers
     MarkerCache.forEach((marker) => {
       marker.setMap(null);
@@ -137,7 +149,7 @@ export const useSetMarker = (map: naver.maps.Map) => {
     const res = [];
     for (let i = 0; i < auctionGroups.length; i++) {
       for (let j = 0; j < auctionGroups[i].auctions.length; j++) {
-        res.push(await setMarker(auctionGroups[i].auctions[j]));
+        res.push(await setMarker(auctionGroups[i].auctions[j], isResult));
       }
     }
     return res;

@@ -8,7 +8,7 @@ import { useAddress } from '@/hooks/queries/useAddress';
 import { useMyPosition } from '@/hooks/queries/useMyPosition';
 import ErrorBoundary from '@/components/ErrorBoundary';
 
-function MerkerRenderer({ failedBidCount }: { failedBidCount: number }) {
+function MerkerRenderer({ isResult }: { isResult: boolean }) {
   const { data: map } = useInitializeMap();
   const [{ lbLat, lbLng, rtLat, rtLng }, setLatLngBounds] = useState(() => {
     const latLngBounds = map.getBounds();
@@ -24,13 +24,13 @@ function MerkerRenderer({ failedBidCount }: { failedBidCount: number }) {
     lbLng,
     rtLat,
     rtLng,
-    failedBidCount,
+    isResult,
   });
 
   const { setMarkers } = useSetMarker(map);
 
   useEffect(() => {
-    setMarkers(auctions);
+    setMarkers(auctions, isResult);
   }, [auctions, setMarkers]);
 
   useEffect(() => {
@@ -160,17 +160,15 @@ function MyPositionAddress({ onClick }: { onClick?: () => void }) {
 }
 
 export default function Home() {
-  const [failedBidCount, setFailedBidCount] = useState(0);
+  const [isResult, setIsResult] = useState(false);
+
   return (
     <>
       <SideNav />
-      <FilterBar
-        failedBidCount={failedBidCount}
-        setFailedBidCount={setFailedBidCount}
-      />
+      <FilterBar isResult={isResult} setIsResult={setIsResult} />
       <div id={'map'} style={{ height: 'calc(100vh - 66px)' }} />
       <Suspense>
-        <MerkerRenderer failedBidCount={failedBidCount} />
+        <MerkerRenderer isResult={isResult} />
       </Suspense>
       <MapFooter />
     </>

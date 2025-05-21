@@ -3,7 +3,7 @@ export interface AuctionParams {
   lbLng: number;
   rtLat: number;
   rtLng: number;
-  failedBidCount: number;
+  isResult: boolean;
 }
 
 export interface GeoAuctionGroup {
