@@ -53,9 +53,20 @@ const AuctionScheduleTable = ({
                   item.auctionResult === '미납' ? (
                     item.auctionResult
                   ) : item.auctionResult === '매각' ? (
-                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
-                      최저매각가
-                    </span>
+                    item.finalAuctionPrice === null ? (
+                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                        최저매각가
+                      </span>
+                    ) : (
+                      <>
+                        <span className="text-xs bg-blue-100 text-blue-700 px-1 py-1 rounded">
+                          낙찰
+                        </span>{' '}
+                        <span className="font-bold text-orange-600">
+                          {formatPrice(item.finalAuctionPrice)}
+                        </span>
+                      </>
+                    )
                   ) : (
                     item.auctionResult
                   )

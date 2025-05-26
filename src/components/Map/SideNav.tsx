@@ -25,7 +25,7 @@ import { usePrediction } from '@/hooks/queries/usePrediction';
 import AuctionScheduleTable from '@/components/AuctionScheduleTable';
 import ErrorBoundary from '@/components/ErrorBoundary';
 
-export function SideNav() {
+export function SideNav({ isResult }: { isResult: boolean }) {
   const { selectedAuction, isNavOpen } = useAuctionStore();
 
   if (!isNavOpen || selectedAuction == null) return null;
@@ -64,13 +64,19 @@ export function SideNav() {
           </div>
         }
       >
-        <AuctionDetail auctionId={selectedAuction.id} />
+        <AuctionDetail auctionId={selectedAuction.id} isResult={isResult} />
       </Suspense>
     </div>
   );
 }
 
-function AuctionDetail({ auctionId }: { auctionId: string }) {
+function AuctionDetail({
+  auctionId,
+  isResult,
+}: {
+  auctionId: string;
+  isResult: boolean;
+}) {
   const { closeNav, selectedAuction, setSelectAuction } = useAuctionStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -92,11 +98,7 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
     },
   });
 
-  const auctionSchedules = auction.auctionScheduleList.slice(
-    0,
-    // 마지막 건은 매각기일 예정일이므로 제외
-    auction.auctionScheduleList.length - 1,
-  );
+  const auctionSchedules = auction.auctionScheduleList;
 
   const openModal = (index: number) => {
     setCurrentImageIndex(index);
@@ -150,11 +152,13 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
         </div>
       </div>
       <div className="p-2 space-y-4">
-        <div className="p-4 bg-white border rounded-md shadow-sm">
-          <Suspense>
-            <InvestmentTags auctionId={auctionId} />
-          </Suspense>
-        </div>
+        <ErrorBoundary fallback={null}>
+          <div className="p-4 bg-white border rounded-md shadow-sm">
+            <Suspense>
+              <InvestmentTags auctionId={auctionId} />
+            </Suspense>
+          </div>
+        </ErrorBoundary>
         <div className="p-4 bg-white border rounded-md shadow-sm">
           <div className="flex items-center mb-3">
             <LuMapPin className="mr-2 text-blue-500 size-6" />
@@ -238,7 +242,7 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
         </div>
         <div className="sticky bottom-0 pt-2 -m-2 rounded-b-lg bg-gray-50">
           <Suspense>
-            <MockAuctionButton auctionId={auctionId} />
+            <MockAuctionButton auctionId={auctionId} isResult={isResult} />
           </Suspense>
         </div>
       </div>
@@ -311,7 +315,13 @@ function AuctionDetail({ auctionId }: { auctionId: string }) {
   );
 }
 
-function MockAuctionButton({ auctionId }: { auctionId: string }) {
+function MockAuctionButton({
+  auctionId,
+  isResult,
+}: {
+  auctionId: string;
+  isResult: boolean;
+}) {
   const { data: auction } = useAuction(auctionId);
   const { data: user } = useUser();
   const { login } = useKakaoLogin();
@@ -364,6 +374,14 @@ function MockAuctionButton({ auctionId }: { auctionId: string }) {
               <PredictionPriceDisplay
                 auctionId={auctionId}
                 minBidPrice={minBidPrice}
+                finalPrice={
+                  auction.auctionScheduleList.find(
+                    (schedule) =>
+                      schedule.auctionResult === '매각' &&
+                      schedule.finalAuctionPrice,
+                  )?.finalAuctionPrice || 0
+                }
+                isResult={isResult}
               />
             </Suspense>
           </ErrorBoundary>
@@ -567,14 +585,21 @@ function MockAuctionModal({
 const PredictionPriceDisplay = ({
   auctionId,
   minBidPrice,
+  finalPrice,
+  isResult,
 }: {
   auctionId: string | undefined;
   minBidPrice: number;
+  finalPrice: number;
+  isResult: boolean;
 }) => {
   if (!auctionId) {
     return <span className="font-semibold text-gray-500">경매 선택 필요</span>;
   }
   const { data: prediction } = usePrediction(auctionId);
+
+  console.log('Prediction data:', prediction);
+  console.log(finalPrice);
 
   if (prediction && typeof prediction.predicted_price !== 'undefined') {
     const isBelowMin = prediction.predicted_price < minBidPrice;
@@ -583,7 +608,10 @@ const PredictionPriceDisplay = ({
         className={`font-bold ${!isBelowMin ? 'text-blue-600' : 'text-orange-500'}`}
       >
         {commaizeNumber(prediction.predicted_price)}원 (
-        {((prediction.predicted_price / minBidPrice) * 100).toFixed(0)}%)
+        {isResult
+          ? `낙찰가 대비 ${((prediction.predicted_price / finalPrice) * 100).toFixed(0)}`
+          : ((prediction.predicted_price / minBidPrice) * 100).toFixed(0)}
+        %)
         {isBelowMin && (
           <span className="ml-2 text-xs text-red-500 font-bold bg-red-100 rounded px-2 py-0.5">
             유찰 예상

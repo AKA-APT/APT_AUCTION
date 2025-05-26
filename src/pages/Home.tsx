@@ -164,7 +164,7 @@ export default function Home() {
 
   return (
     <>
-      <SideNav />
+      <SideNav isResult={isResult} />
       <FilterBar isResult={isResult} setIsResult={setIsResult} />
       <div id={'map'} style={{ height: 'calc(100vh - 66px)' }} />
       <Suspense>
