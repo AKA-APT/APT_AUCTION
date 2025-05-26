@@ -1,4 +1,5 @@
 import { AuctionCardImage } from '@/components/AuctionCardImage';
+import { Spacing } from '@/components/Spacing';
 import { LikeAuction } from '@/models/auction';
 import { getLikeLists } from '@/remotes/my-page';
 import { commaizeNumber } from '@/utils/number';
@@ -34,6 +35,7 @@ export function Auction({ auction }: { auction: LikeAuction }) {
     <div className="overflow-hidden rounded-lg border shadow-lg">
       <div className="p-4">
         <AuctionCardImage auctionId={auction.id} />
+        <Spacing size={8} />
         <h3 className="text-lg font-semibold">
           {auction.auctionObject.address}
         </h3>

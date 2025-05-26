@@ -24,7 +24,9 @@ export default function MyPage() {
         <Suspense>
           <FavoriteListings />
         </Suspense>
-        <RecommendedListings />
+        <Suspense>
+          <RecommendedListings />
+        </Suspense>
       </Suspense>
       <div className="w-full flex justify-end">
         <button className="text-white" onClick={logout}>
