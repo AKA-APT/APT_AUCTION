@@ -76,7 +76,10 @@ function Tender({ tender, isMock }: { tender: TenderType; isMock: boolean }) {
           <ArrowBigDownDash className="w-4 h-4 mr-2" />
           <span className="text-gray-900">최저 입찰가:</span>
           <span className="ml-auto font-medium">
-            {commaizeNumber(tender.auction.latestBiddingPrice)}원
+            {commaizeNumber(
+              tender.auction.disposalGoodsExecutionInfo.firstAuctionPrice,
+            )}
+            원
           </span>
         </div>
         <div className="flex items-center mt-2 text-sm">
