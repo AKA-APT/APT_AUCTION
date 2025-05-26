@@ -5,6 +5,7 @@ import {
   AuctionImage,
   AuctionStatus,
   AuctionInvestmentTag,
+  AccupantInfo,
 } from '@/models/auction';
 import { httpClient } from '@/utils/http-client';
 
@@ -28,6 +29,12 @@ export function getAuctions({
 
 export function getAuction(id: string) {
   return httpClient.get<DetailAuction>(`/api/v2/auctions/${id}`);
+}
+
+export function getAuctionDetails(id: string) {
+  return httpClient.get<{ occupantInfoList: AccupantInfo[] }>(
+    `/api/v2/auctions/${id}/details`,
+  );
 }
 
 export function toggleLikeAuction(id: string) {

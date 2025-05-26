@@ -272,3 +272,8 @@ export interface AuctionInvestmentTag {
   name: string;
   description: string;
 }
+
+export interface AccupantInfo {
+  occupant: string;
+  isOpposingPower: 1 | 0; // 1: 있음, 0: 없음
+}

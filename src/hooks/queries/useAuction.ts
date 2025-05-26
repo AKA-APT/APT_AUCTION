@@ -1,9 +1,16 @@
-import { getAuction } from '@/remotes/auction';
+import { getAuction, getAuctionDetails } from '@/remotes/auction';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 export const useAuction = (id: string) => {
   return useSuspenseQuery({
     queryKey: ['getAuction', id],
-    queryFn: () => getAuction(id),
+    queryFn: async () => {
+      const [auction, details] = await Promise.all([
+        getAuction(id),
+        getAuctionDetails(id),
+      ]);
+
+      return { ...auction, ...details };
+    },
   });
 };

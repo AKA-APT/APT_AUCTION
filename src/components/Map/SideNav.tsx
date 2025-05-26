@@ -24,6 +24,7 @@ import { useUser } from '@/hooks/Auth/useUser';
 import { usePrediction } from '@/hooks/queries/usePrediction';
 import AuctionScheduleTable from '@/components/AuctionScheduleTable';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import { PersonStandingIcon } from 'lucide-react';
 
 export function SideNav({ isResult }: { isResult: boolean }) {
   const { selectedAuction, isNavOpen } = useAuctionStore();
@@ -210,6 +211,44 @@ function AuctionDetail({
               </span>
             </div>
           </div>
+        </div>
+
+        <div className="p-4 bg-white border rounded-md shadow-sm">
+          <div className="flex items-center mb-2 text-xl font-bold text-blue-600">
+            <PersonStandingIcon className="mr-2 size-5" />
+            점유자 정보
+            {auction.occupantInfoList.length === 0 ? (
+              <span className="bg-green-400 text-sm rounded-md p-1 px-2 text-white ml-2">
+                매우 안전
+              </span>
+            ) : auction.occupantInfoList[0].isOpposingPower === 1 ? (
+              <span className="bg-red-400 text-sm rounded-md p-1 px-2 text-white ml-2">
+                주의
+              </span>
+            ) : (
+              <span className="bg-blue-400 text-sm rounded-md p-1 px-2 text-white ml-2">
+                안전
+              </span>
+            )}
+          </div>
+          {auction.occupantInfoList.length > 0 ? (
+            <>
+              {auction.occupantInfoList[0].isOpposingPower === 1 ? (
+                <div style={{ wordBreak: 'keep-all' }}>
+                  낙찰할 경우 기존 세입자{' '}
+                  {auction.occupantInfoList[0].occupant.slice(0, 2)}* 님에게
+                  보증금을 대신 돌려주셔야해요. 잘 고려해서 입찰하세요!
+                </div>
+              ) : (
+                <div>
+                  세입자가 있지만 전세보증금을 돌려주지 않아도 괜찮아요. 입찰을
+                  고려해보세요!
+                </div>
+              )}
+            </>
+          ) : (
+            <div>현재 건물에 거주중인 사람이 없어요. 편하게 입찰해보세요!</div>
+          )}
         </div>
         <div className="p-4 bg-white border rounded-md shadow-sm">
           <AuctionCardImage auctionId={auctionId} onImageClick={openModal} />
