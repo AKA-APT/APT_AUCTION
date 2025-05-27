@@ -16,8 +16,8 @@ export function RecommendedListings() {
         queryFn: () => getAuction('67db2c4a6ebb8c8350b79676'),
       },
       {
-        queryKey: ['getAuction', '67db2c566ebb8c8350b796fb'],
-        queryFn: () => getAuction('67db2c566ebb8c8350b796fb'),
+        queryKey: ['getAuction', '67db2c2a6ebb8c8350b794f0'],
+        queryFn: () => getAuction('67db2c2a6ebb8c8350b794f0'),
       },
     ],
   });

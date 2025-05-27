@@ -7,7 +7,7 @@ const httpClient = axios.create({
 
 // 기존 AxiosInstance를 확장하여 새로운 타입을 정의
 interface CustomAxiosInstance extends AxiosInstance {
-  get<T = any>(url: string, config?: any): Promise<T>;
+  get<T = any>(url: string, config?: { responseType?: 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream', transformResponse?: (data: any) => any, [key: string]: any }): Promise<T>;
   post<T = any>(url: string, data?: any, config?: any): Promise<T>;
   put<T = any>(url: string, data?: any, config?: any): Promise<T>;
   delete<T = any>(url: string, config?: any): Promise<T>;

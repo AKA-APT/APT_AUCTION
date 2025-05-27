@@ -56,19 +56,12 @@ function Tender({ tender, isMock }: { tender: TenderType; isMock: boolean }) {
       className="relative overflow-hidden border rounded-lg shadow-lg"
     >
       <div className="p-4">
-        <AuctionCard auction={tender.auction} />
+        {/* AuctionCard에 이미 상태 라벨이 있으므로 중복을 방지하기 위해 showLabel={false}로 설정 */}
+        <AuctionCard auction={tender.auction} showStatusLabel={false} />
 
         {isMock && (
           <div className="absolute flex items-center px-2 py-1 pr-3 text-sm font-medium text-blue-700 bg-blue-100 border-2 border-blue-500 rounded-full left-6 top-8">
             <Info className="w-4 h-4 mr-1" /> 모의 낙찰
-          </div>
-        )}
-
-        {!isMock && auctionStatus.status === '낙찰' && (
-          <div>
-            <div className="absolute px-2 py-1 pr-3 text-white border-2 rounded-full left-6 top-8 border-slate-500 bg-slate-500">
-              ㆍ낙찰됨
-            </div>
           </div>
         )}
 
