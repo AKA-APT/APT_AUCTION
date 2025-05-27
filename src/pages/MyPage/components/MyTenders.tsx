@@ -56,8 +56,7 @@ function Tender({ tender, isMock }: { tender: TenderType; isMock: boolean }) {
       className="relative overflow-hidden border rounded-lg shadow-lg"
     >
       <div className="p-4">
-        {/* AuctionCard에 이미 상태 라벨이 있으므로 중복을 방지하기 위해 showLabel={false}로 설정 */}
-        <AuctionCard auction={tender.auction} showStatusLabel={false} />
+        <AuctionCard auction={tender.auction}/>
 
         {isMock && (
           <div className="absolute flex items-center px-2 py-1 pr-3 text-sm font-medium text-blue-700 bg-blue-100 border-2 border-blue-500 rounded-full left-6 top-8">
