@@ -3,7 +3,13 @@ import { DetailAuction } from '@/models/auction';
 import { commaizeNumber } from '@/utils/number';
 import { Building, AlertTriangle, Calendar } from 'lucide-react';
 
-export function AuctionCard({ auction }: { auction: DetailAuction }) {
+export function AuctionCard({ 
+  auction, 
+  showStatusLabel = true 
+}: { 
+  auction: DetailAuction;
+  showStatusLabel?: boolean;
+}) {
   const getAiScoreColor = (score: number) => {
     if (score >= 90) return 'text-green-600';
     if (score >= 80) return 'text-blue-600';
@@ -13,7 +19,7 @@ export function AuctionCard({ auction }: { auction: DetailAuction }) {
 
   return (
     <div className="">
-      <AuctionCardImage auctionId={auction.id} />
+      <AuctionCardImage auctionId={auction.id} showLabel={showStatusLabel} />
 
       <div className="flex items-center justify-between mt-2 mb-2">
         <div className="flex items-center">
