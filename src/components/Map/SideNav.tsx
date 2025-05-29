@@ -33,7 +33,7 @@ export function SideNav({ isResult }: { isResult: boolean }) {
 
   return (
     <div
-      className="fixed left-0 top-[65px] z-20 h-[calc(100vh-65px)] w-[max(35%,20rem)] rounded-r-lg bg-gray-50 p-2 shadow-lg animate-slide-in-left"
+      className="fixed left-0 top-[65px] z-50 h-[calc(100vh-65px)] w-[max(35%,20rem)] rounded-r-lg bg-gray-50 p-2 shadow-lg animate-slide-in-left"
       style={{
         overflowY: 'auto',
         msOverflowStyle: 'none',
@@ -218,15 +218,15 @@ function AuctionDetail({
             <PersonStandingIcon className="mr-2 size-5" />
             점유자 정보
             {auction.occupantInfoList.length === 0 ? (
-              <span className="bg-green-400 text-sm rounded-md p-1 px-2 text-white ml-2">
+              <span className="p-1 px-2 ml-2 text-sm text-white bg-green-400 rounded-md">
                 매우 안전
               </span>
             ) : auction.occupantInfoList[0].isOpposingPower === 1 ? (
-              <span className="bg-red-400 text-sm rounded-md p-1 px-2 text-white ml-2">
+              <span className="p-1 px-2 ml-2 text-sm text-white bg-red-400 rounded-md">
                 주의
               </span>
             ) : (
-              <span className="bg-blue-400 text-sm rounded-md p-1 px-2 text-white ml-2">
+              <span className="p-1 px-2 ml-2 text-sm text-white bg-blue-400 rounded-md">
                 안전
               </span>
             )}
@@ -385,7 +385,7 @@ function MockAuctionButton({
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-px px-2 py-2 text-lg bg-gray-200 text-start rounded-sm">
+      <div className="grid grid-cols-1 gap-px px-2 py-2 text-lg bg-gray-200 rounded-sm text-start">
         <div className="p-2 pl-4 bg-white">
           <span className="text-base font-semibold">최저 입찰가</span>
           <br />

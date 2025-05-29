@@ -91,8 +91,8 @@ function MapFooter() {
   };
 
   return (
-    <div className="fixed bottom-3 left-1/2 z-50 -translate-x-1/2 w-[95vw] max-w-md rounded-xl shadow-lg bg-white/90 border border-gray-200 px-3 py-1 text-xs flex flex-col items-center">
-      <div className="flex items-center justify-between w-full gap-2">
+    <div className="fixed z-40 flex flex-col items-end max-w-md px-3 py-2 text-xs border border-gray-200 shadow-lg bottom-3 right-3 rounded-xl bg-white/90">
+      <div className="flex flex-col w-full gap-1">
         <Suspense
           fallback={<span className="text-gray-400">중심 변환 중...</span>}
         >
