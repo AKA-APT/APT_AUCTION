@@ -6,7 +6,7 @@ import { addTender } from '@/remotes/my-page';
 import { useAuctionStore } from '@/stores/useAuctionStore';
 import { commaizeNumber } from '@/utils/number';
 import { useMutation } from '@tanstack/react-query';
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import {
   LuMapPin,
@@ -28,6 +28,19 @@ import { PersonStandingIcon } from 'lucide-react';
 
 export function SideNav({ isResult }: { isResult: boolean }) {
   const { selectedAuction, isNavOpen } = useAuctionStore();
+  const { closeNav } = useAuctionStore();
+
+  // ESC 키로 닫기 기능 추가
+  useEffect(() => {
+    if (!isNavOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        closeNav();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isNavOpen, closeNav]);
 
   if (!isNavOpen || selectedAuction == null) return null;
 
